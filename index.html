@@ -408,6 +408,11 @@
         let currentLottery = LOTERIAS.animalitos[0];
         let currentAnalysisData = null;
 
+        // Caché global independiente por lotería para evitar cambios al presionar dos veces
+        let cacheAnalisisPorLoteria = {};
+        // Historial simulado por lotería para detectar si hay nuevos resultados ingresados
+        let historialSimuladoPorLoteria = {};
+
         window.onload = function() {
             renderLotteryGrid();
             ejecutarAnalisis();
@@ -475,9 +480,32 @@
             ejecutarAnalisis();
         }
 
-        function generarDatosAnalisis(lottery) {
+        function generarDatosAnalisis(lottery, estadoHistorial) {
             const isAnimalito = lottery.type.startsWith('animalito');
             
+            // Usar una semilla fija basada en el estado actual del historial de esta lotería
+            // para que si los datos no cambian, el resultado sea exactamente el mismo.
+            let seed = 12345;
+            for (let i = 0; i < estadoHistorial.length; i++) {
+                seed += estadoHistorial.charCodeAt(i) * (i + 1);
+            }
+
+            // Generador pseudoaleatorio determinista basado en semilla
+            function pseudoRandom(s) {
+                let x = Math.sin(s++) * 10000;
+                return x - Math.floor(x);
+            }
+
+            let s = seed;
+            function shuffleDeterministic(array) {
+                let arr = [...array];
+                for (let i = arr.length - 1; i > 0; i--) {
+                    let j = Math.floor(pseudoRandom(s++) * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr;
+            }
+
             let hotItems = [];
             let coldItems = [];
             let topSuggestions = [];
@@ -488,297 +516,3 @@
             if (isAnimalito) {
                 const pool = lottery.maxRange === 77 
                     ? ANIMALITOS_LISTA 
-                    : ANIMALITOS_LISTA.slice(0, 38);
-
-                const shuffled = [...pool].sort(() => 0.5 - Math.random());
-                
-                topSuggestions = shuffled.slice(0, 3).map((item, idx) => ({
-                    num: item.num,
-                    name: item.name,
-                    emoji: item.emoji,
-                    prob: (88.5 - (idx * 4.2)).toFixed(1),
-                    motivo: idx === 0 ? 'Frecuencia alta + Retardo de hora' : (idx === 1 ? 'Atrasado en sorteo clave' : 'Ciclo de rotación cumplido')
-                }));
-
-                weeklyTop = shuffled.slice(3, 7).map(item => ({
-                    label: `${item.num} - ${item.name}`,
-                    sub: item.emoji,
-                    salidasSemana: Math.floor(Math.random() * 8) + 12
-                }));
-
-                weeklyLow = shuffled.slice(7, 11).map(item => ({
-                    label: `${item.num} - ${item.name}`,
-                    sub: item.emoji,
-                    diasSinSalir: Math.floor(Math.random() * 6) + 7
-                }));
-
-                hotItems = shuffled.slice(11, 15).map(item => ({
-                    label: `${item.num} - ${item.name}`,
-                    sub: item.emoji,
-                    count: Math.floor(Math.random() * 4) + 4
-                }));
-
-                coldItems = shuffled.slice(15, 19).map(item => ({
-                    label: `${item.num} - ${item.name}`,
-                    sub: item.emoji,
-                    sorteosAtrasados: Math.floor(Math.random() * 12) + 10
-                }));
-
-                timeSlots = [
-                    { slot: 'Mañana (09am - 11am)', tend: `${shuffled[19].num} - ${shuffled[19].name} (${shuffled[19].emoji})` },
-                    { slot: 'Tarde (12pm - 04pm)', tend: `${shuffled[20].num} - ${shuffled[20].name} (${shuffled[20].emoji})` },
-                    { slot: 'Noche (05pm - 07pm)', tend: `${shuffled[21].num} - ${shuffled[21].name} (${shuffled[21].emoji})` }
-                ];
-
-            } else {
-                const randomTriple = () => String(Math.floor(Math.random() * 900) + 100);
-
-                topSuggestions = [
-                    { num: randomTriple(), name: 'Triple Directo', emoji: '🎲', prob: '87.4', motivo: 'Patrón de repetición de serie' },
-                    { num: randomTriple(), name: 'Triple Permutado', emoji: '🔄', prob: '81.9', motivo: 'Alta densidad en terminales' },
-                    { num: randomTriple(), name: 'Terminal Fuerte', emoji: '💥', prob: '78.3', motivo: 'Atrasado en sorteos principales' }
-                ];
-
-                weeklyTop = Array.from({length: 4}, () => ({
-                    label: `Triple ${randomTriple()}`,
-                    sub: '⭐',
-                    salidasSemana: Math.floor(Math.random() * 6) + 9
-                }));
-
-                weeklyLow = Array.from({length: 4}, () => ({
-                    label: `Triple ${randomTriple()}`,
-                    sub: '📉',
-                    diasSinSalir: Math.floor(Math.random() * 5) + 7
-                }));
-
-                hotItems = Array.from({length: 4}, () => ({
-                    label: `Triple ${randomTriple()}`,
-                    sub: '🔥',
-                    count: Math.floor(Math.random() * 5) + 3
-                }));
-
-                coldItems = Array.from({length: 4}, () => ({
-                    label: `Triple ${randomTriple()}`,
-                    sub: '❄️',
-                    sorteosAtrasados: Math.floor(Math.random() * 15) + 10
-                }));
-
-                timeSlots = [
-                    { slot: 'Sorteo 12:45 PM', tend: `Triple ${randomTriple()}` },
-                    { slot: 'Sorteo 04:45 PM', tend: `Triple ${randomTriple()}` },
-                    { slot: 'Sorteo 07:45 PM', tend: `Triple ${randomTriple()}` }
-                ];
-            }
-
-            return { topSuggestions, weeklyTop, weeklyLow, hotItems, coldItems, timeSlots };
-        }
-
-        function ejecutarAnalisis() {
-            const overlay = document.getElementById('loadingOverlay');
-            const results = document.getElementById('resultsContainer');
-            const btn = document.getElementById('btnAnalyze');
-
-            overlay.classList.remove('hidden');
-            results.classList.add('opacity-40', 'pointer-events-none');
-            btn.disabled = true;
-
-            setTimeout(() => {
-                currentAnalysisData = generarDatosAnalisis(currentLottery);
-                renderResultados(currentAnalysisData);
-
-                overlay.classList.add('hidden');
-                results.classList.remove('opacity-40', 'pointer-events-none');
-                btn.disabled = false;
-                actualizarHoraHeader();
-            }, 300);
-        }
-
-        function renderResultados(data) {
-            const topGrid = document.getElementById('topSuggestionsGrid');
-            topGrid.innerHTML = '';
-
-            data.topSuggestions.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = `p-4 rounded-xl border ${
-                    index === 0 
-                    ? 'bg-gradient-to-b from-emerald-950/60 to-slate-900 border-emerald-500/50 shadow-lg ring-1 ring-emerald-500/30' 
-                    : 'bg-slate-800/60 border-slate-700/60'
-                }`;
-
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-2xl">${item.emoji}</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${index === 0 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-700 text-slate-300'}">
-                            ${item.prob}% Prob.
-                        </span>
-                    </div>
-                    <div class="text-2xl font-black text-white tracking-tight">${item.num}</div>
-                    <div class="text-xs font-bold text-slate-300">${item.name}</div>
-                    <p class="text-[10px] text-slate-400 mt-2 border-t border-slate-700/40 pt-1.5">${item.motivo}</p>
-                `;
-                topGrid.appendChild(card);
-            });
-
-            const weeklyTopList = document.getElementById('weeklyTopList');
-            weeklyTopList.innerHTML = '';
-            data.weeklyTop.forEach(item => {
-                const row = document.createElement('div');
-                row.className = "flex justify-between items-center text-xs text-slate-300";
-                row.innerHTML = `
-                    <span>${item.sub} ${item.label}</span>
-                    <span class="font-mono text-emerald-400 font-bold">${item.salidasSemana} veces</span>
-                `;
-                weeklyTopList.appendChild(row);
-            });
-
-            const weeklyLowList = document.getElementById('weeklyLowList');
-            weeklyLowList.innerHTML = '';
-            data.weeklyLow.forEach(item => {
-                const row = document.createElement('div');
-                row.className = "flex justify-between items-center text-xs text-slate-300";
-                row.innerHTML = `
-                    <span>${item.sub} ${item.label}</span>
-                    <span class="font-mono text-amber-400 font-bold">${item.diasSinSalir}d sin salir</span>
-                `;
-                weeklyLowList.appendChild(row);
-            });
-
-            const hotList = document.getElementById('hotList');
-            hotList.innerHTML = '';
-            data.hotItems.forEach(item => {
-                const row = document.createElement('div');
-                row.className = "flex justify-between items-center p-2.5 rounded-xl bg-slate-800/40 border border-slate-800 text-xs";
-                row.innerHTML = `
-                    <span class="font-semibold text-slate-200 flex items-center gap-2">
-                        <span>${item.sub}</span> ${item.label}
-                    </span>
-                    <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-bold text-[11px]">
-                        ${item.count} salidas
-                    </span>
-                `;
-                hotList.appendChild(row);
-            });
-
-            const coldList = document.getElementById('coldList');
-            coldList.innerHTML = '';
-            data.coldItems.forEach(item => {
-                const row = document.createElement('div');
-                row.className = "flex justify-between items-center p-2.5 rounded-xl bg-slate-800/40 border border-slate-800 text-xs";
-                row.innerHTML = `
-                    <span class="font-semibold text-slate-200 flex items-center gap-2">
-                        <span>${item.sub}</span> ${item.label}
-                    </span>
-                    <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-mono font-bold text-[11px]">
-                        ${item.sorteosAtrasados} sorteos fríos
-                    </span>
-                `;
-                coldList.appendChild(row);
-            });
-
-            const timeContainer = document.getElementById('timeSlotContainer');
-            timeContainer.innerHTML = '';
-            data.timeSlots.forEach(slot => {
-                const card = document.createElement('div');
-                card.className = "p-3 rounded-xl bg-slate-800/50 border border-slate-800 text-xs";
-                card.innerHTML = `
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">${slot.slot}</div>
-                    <div class="font-extrabold text-slate-200 flex items-center gap-1.5">
-                        <i class="fa-solid fa-arrow-trend-up text-emerald-400 text-[10px]"></i>
-                        ${slot.tend}
-                    </div>
-                `;
-                timeContainer.appendChild(card);
-            });
-        }
-
-        function agregarNuevoResultado() {
-            const input = document.getElementById('inputNewResult');
-            const val = input.value.trim();
-
-            if (!val) {
-                showToast('Ingresa un número o nombre válido', 'warning');
-                return;
-            }
-
-            showToast(`Resultado "${val}" registrado. Recalculando...`, 'success');
-            input.value = '';
-            ejecutarAnalisis();
-        }
-
-        function simularActualizacion() {
-            const icon = document.getElementById('syncIcon');
-            icon.classList.add('animate-spin');
-            
-            setTimeout(() => {
-                icon.classList.remove('animate-spin');
-                showToast('Estadísticas sincronizadas', 'success');
-                ejecutarAnalisis();
-            }, 500);
-        }
-
-        function obtenerTextoPronostico() {
-            if (!currentAnalysisData) return '';
-            
-            const top = currentAnalysisData.topSuggestions;
-            const fechaHoy = new Date().toLocaleDateString('es-VE');
-            let text = `⚡ MATRIXLOTTO VZLA - PRONÓSTICO\n`;
-            text += `🎰 Sorteo: ${currentLottery.name}\n`;
-            text += `📅 Fecha: ${fechaHoy}\n\n`;
-            text += `🎯 TOP 3 SUGERIDOS:\n`;
-            
-            top.forEach((item, i) => {
-                text += `${i+1}. ${item.num} (${item.name}) ${item.emoji} -> ${item.prob}%\n`;
-            });
-
-            text += `\n✨ Generado con MatrixLotto Vzla`;
-            return text;
-        }
-
-        function copiarPronostico() {
-            const texto = obtenerTextoPronostico();
-            const tempInput = document.createElement('textarea');
-            tempInput.value = texto;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-
-            showToast('¡Pronóstico copiado con fecha!', 'success');
-        }
-
-        function compartirNativo() {
-            const texto = obtenerTextoPronostico();
-            if (navigator.share) {
-                navigator.share({
-                    title: `Pronóstico ${currentLottery.name}`,
-                    text: texto
-                }).catch(() => {});
-            } else {
-                copiarPronostico();
-            }
-        }
-
-        function showToast(msg, type = 'info') {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toastMsg');
-            const toastIcon = document.getElementById('toastIcon');
-
-            toastMsg.innerText = msg;
-
-            if (type === 'success') {
-                toastIcon.className = 'fa-solid fa-circle-check text-emerald-400';
-            } else if (type === 'warning') {
-                toastIcon.className = 'fa-solid fa-triangle-exclamation text-amber-400';
-            } else {
-                toastIcon.className = 'fa-solid fa-circle-info text-cyan-400';
-            }
-
-            toast.classList.remove('opacity-0', 'pointer-events-none');
-
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'pointer-events-none');
-            }, 2500);
-        }
-    </script>
-</body>
-</html>
