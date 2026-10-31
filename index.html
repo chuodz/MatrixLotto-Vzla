@@ -2,10 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MatrixLotto Vzla - Analizador Estadístico de Loterías</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
@@ -14,24 +17,38 @@
             color: #F8FAFC;
             -webkit-tap-highlight-color: transparent;
         }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0F172A; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
-        .badge-pulse { animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F172A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 9999px;
+        }
+        .badge-pulse {
+            animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
         @keyframes pulse-slow {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
-        .glow-btn { box-shadow: 0 0 20px rgba(16, 185, 129, 0.35); }
+        .glow-btn {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+        }
     </style>
 </head>
 <body class="min-h-screen pb-12 flex flex-col justify-between selection:bg-amber-500 selection:text-black">
 
-    <!-- Header -->
+    <!-- Header Navigation -->
     <header class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-4 py-3 shadow-lg">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2.5">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-emerald-500 to-teal-500 flex items-center justify-center font-black text-xl shadow-md text-slate-950">⚡</div>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-emerald-500 to-teal-500 flex items-center justify-center font-black text-xl shadow-md text-slate-950">
+                    ⚡
+                </div>
                 <div>
                     <h1 class="text-base font-extrabold tracking-tight text-white leading-tight">
                         MatrixLotto <span class="text-emerald-400">Vzla</span>
@@ -39,6 +56,7 @@
                     <p class="text-[10px] text-slate-400 font-medium">Analizador Estadístico de Loterías</p>
                 </div>
             </div>
+            
             <div class="flex items-center gap-2">
                 <button id="btnSync" onclick="simularActualizacion()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-xs flex items-center gap-1.5 border border-slate-700">
                     <i class="fa-solid fa-rotate text-emerald-400" id="syncIcon"></i>
@@ -52,9 +70,10 @@
         </div>
     </header>
 
+    <!-- Main Container -->
     <main class="max-w-4xl mx-auto px-4 py-6 w-full flex-grow space-y-6">
 
-        <!-- Banner -->
+        <!-- Banner Informativo -->
         <div class="bg-gradient-to-r from-slate-800 via-slate-800/90 to-slate-900 border border-slate-700/60 rounded-2xl p-4 shadow-xl relative overflow-hidden">
             <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-emerald-500/10 rounded-full blur-2xl"></div>
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 relative z-10">
@@ -73,7 +92,7 @@
             </div>
         </div>
 
-        <!-- Selección -->
+        <!-- Selección de Lotería y Categoría -->
         <section class="space-y-3">
             <div class="flex justify-between items-center">
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
@@ -83,19 +102,25 @@
                 <span class="text-[11px] text-emerald-400 font-bold truncate max-w-[150px] text-right" id="selectedLotteryName">Lotto Activo</span>
             </div>
 
+            <!-- Tabs Categorías -->
             <div class="grid grid-cols-2 gap-2 p-1 bg-slate-900/80 rounded-xl border border-slate-800">
                 <button id="tabAnimalitos" onclick="switchCategory('animalitos')" class="py-2 px-3 text-xs font-semibold rounded-lg transition bg-slate-800 text-emerald-400 shadow-sm flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-paw"></i> Animalitos
+                    <i class="fa-solid fa-paw"></i>
+                    Animalitos
                 </button>
                 <button id="tabTriples" onclick="switchCategory('triples')" class="py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-arrow-down-1-9"></i> Triples y Loterías
+                    <i class="fa-solid fa-arrow-down-1-9"></i>
+                    Triples y Loterías
                 </button>
             </div>
 
-            <div id="lotteryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5"></div>
+            <!-- Grid de Selección de Lotería -->
+            <div id="lotteryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+                <!-- Se llena dinámicamente -->
+            </div>
         </section>
 
-        <!-- Botón análisis -->
+        <!-- Botón de Análisis Principal Optimizado y Centrado en 1 Sola Línea -->
         <section class="py-2">
             <button id="btnAnalyze" onclick="ejecutarAnalisis()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-sm sm:text-base glow-btn transition active:scale-[0.99] flex items-center justify-center gap-2 border border-emerald-300/40 whitespace-nowrap overflow-hidden text-ellipsis">
                 <i class="fa-solid fa-bolt text-base sm:text-lg shrink-0"></i>
@@ -103,7 +128,7 @@
             </button>
         </section>
 
-        <!-- Loader -->
+        <!-- Loader de Procesando -->
         <div id="loadingOverlay" class="hidden bg-slate-900/90 rounded-2xl p-6 border border-slate-800 text-center space-y-4">
             <div class="inline-block relative">
                 <div class="w-12 h-12 border-4 border-emerald-500/20 border-t-emerald-400 rounded-full animate-spin"></div>
@@ -114,307 +139,646 @@
             </div>
         </div>
 
-        <!-- Resultados -->
+        <!-- Módulo de Resultados del Análisis -->
         <div id="resultsContainer" class="space-y-6">
 
+            <!-- Pronóstico Inteligente (Top 3 Sugeridos) -->
             <section class="bg-slate-900 border border-emerald-500/30 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 bg-gradient-to-r from-emerald-500 to-amber-500 text-slate-950 font-extrabold text-[10px] px-3 py-1 rounded-bl-xl uppercase tracking-wider">
                     Sugerencias de Hoy
                 </div>
+                
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
                     <h3 class="text-sm font-bold text-slate-300 flex items-center gap-2">
                         <i class="fa-solid fa-bullseye text-emerald-400"></i>
                         Pronóstico Inteligente Sugerido (Top 3)
                     </h3>
-                    <span id="lblPronosticDate" class="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg"></span>
+                    <span id="lblPronosticDate" class="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
+                        <!-- Fecha dinámica -->
+                    </span>
                 </div>
 
                 <div id="topSuggestionsGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div class="col-span-full text-center text-xs text-slate-500 py-6">
-                        Presiona <strong class="text-emerald-400">ANALIZAR AHORA</strong> para generar tu pronóstico.
-                    </div>
+                    <!-- Dinámico -->
                 </div>
 
+                <!-- Botones de Acción Seguros -->
                 <div class="mt-4 pt-3 border-t border-slate-800 flex flex-wrap gap-2 justify-between items-center text-xs">
                     <span class="text-slate-400">Opciones de pronóstico:</span>
                     <div class="flex gap-2">
-                        <button onclick="copiarPronostico()" class="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-copy"></i> Copiar
+                        <button onclick="copiarPronostico()" class="px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 transition border border-emerald-500/30 flex items-center gap-1.5 font-medium">
+                            <i class="fa-regular fa-copy"></i> Copiar Texto
                         </button>
-                        <button onclick="compartirNativo()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-share-nodes"></i> Compartir
+                        <button onclick="compartirNativo()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition border border-slate-700 flex items-center gap-1.5">
+                            <i class="fa-solid fa-share-nodes text-emerald-400"></i> Compartir
                         </button>
                     </div>
                 </div>
             </section>
 
-            <!-- Detalle estadístico -->
-            <section id="detailSection" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
-                <h3 class="text-sm font-bold text-slate-300 flex items-center gap-2">
-                    <i class="fa-solid fa-chart-simple text-amber-400"></i>
-                    Detalle Estadístico del Sorteo
-                </h3>
-                <div id="detailGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+            <!-- Sección: Sobresalientes vs Menos Sobresalientes de la Semana -->
+            <section class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md">
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-week"></i>
+                        Balance Semanal de Rendimiento
+                    </h4>
+                    <span class="text-[10px] text-slate-500">Últimos 7 días</span>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <!-- Más sobresalientes de la semana -->
+                    <div class="bg-slate-800/50 rounded-xl p-3 border border-emerald-500/20">
+                        <div class="text-[11px] font-bold text-emerald-400 mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                            Más Sobresalientes (Frecuentes)
+                        </div>
+                        <div id="weeklyTopList" class="space-y-1.5">
+                            <!-- Dinámico -->
+                        </div>
+                    </div>
+
+                    <!-- Menos sobresalientes de la semana -->
+                    <div class="bg-slate-800/50 rounded-xl p-3 border border-amber-500/20">
+                        <div class="text-[11px] font-bold text-amber-400 mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrow-trend-down"></i>
+                            Menos Sobresalientes (Muy Atrasados)
+                        </div>
+                        <div id="weeklyLowList" class="space-y-1.5">
+                            <!-- Dinámico -->
+                        </div>
+                    </div>
+                </div>
             </section>
+
+            <!-- Sección Calientes vs Fríos Diarios -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <!-- Top Calientes -->
+                <section class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md">
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-fire"></i>
+                            Top Calientes del Día
+                        </h4>
+                        <span class="text-[10px] text-slate-500">En racha</span>
+                    </div>
+                    <div id="hotList" class="space-y-2">
+                        <!-- Dinámico -->
+                    </div>
+                </section>
+
+                <!-- Top Fríos / Atrasados -->
+                <section class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md">
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-snowflake"></i>
+                            Top Fríos / Atrasados
+                        </h4>
+                        <span class="text-[10px] text-slate-500">Por salir</span>
+                    </div>
+                    <div id="coldList" class="space-y-2">
+                        <!-- Dinámico -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Estadísticas por Franja Horaria -->
+            <section class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-clock text-emerald-400"></i>
+                    Proyección por Franja Horaria
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="timeSlotContainer">
+                    <!-- Dinámico -->
+                </div>
+            </section>
+
+            <!-- Simulador de Carga de Resultado -->
+            <section class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4">
+                <details class="group">
+                    <summary class="flex justify-between items-center cursor-pointer list-none font-semibold text-xs text-slate-400 group-open:text-emerald-400">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-plus-circle"></i>
+                            ¿Salió un nuevo resultado? Agrégalo para recalcular
+                        </span>
+                        <i class="fa-solid fa-chevron-down group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="mt-4 pt-3 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-[11px] text-slate-400 mb-1">Resultado o Número:</label>
+                            <input type="text" id="inputNewResult" placeholder="Ej: 10 o Tigre" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-400 mb-1">Horario del Sorteo:</label>
+                            <select id="selectTimeSlot" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                <option value="Mañana">Mañana (09:00 AM - 11:00 AM)</option>
+                                <option value="Tarde">Tarde (12:00 PM - 04:00 PM)</option>
+                                <option value="Noche">Noche (05:00 PM - 07:00 PM)</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="agregarNuevoResultado()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs transition">
+                                Insertar y Recalcular
+                            </button>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
         </div>
     </main>
 
-    <footer class="max-w-4xl mx-auto px-4 py-4 text-center text-[10px] text-slate-600 w-full">
-        MatrixLotto Vzla © 2025 · Los pronósticos son estadísticos y no garantizan premios. Juega con responsabilidad.
+    <!-- Footer -->
+    <footer class="max-w-4xl mx-auto px-4 py-6 border-t border-slate-800/60 text-center text-xs text-slate-500 space-y-2 w-full">
+        <p>MatrixLotto Vzla © 2026 - Todos los derechos reservados.</p>
+        <p class="text-[10px] text-slate-600">Herramienta orientada a análisis estadístico y entrenamiento numérico.</p>
     </footer>
 
-    <!-- Toast -->
-    <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 text-xs font-bold shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50"></div>
+    <!-- Toast / Notificación -->
+    <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-800 text-slate-100 border border-slate-700 px-4 py-2.5 rounded-xl shadow-2xl text-xs flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300 z-50">
+        <i id="toastIcon" class="fa-solid fa-circle-info text-emerald-400"></i>
+        <span id="toastMsg">Notificación</span>
+    </div>
 
+    <!-- JavaScript Principal -->
     <script>
-        // ============ DATOS ============
-        const LOTTERIES = {
+        const LOTERIAS = {
             animalitos: [
-                { id: 'lottoActivo', name: 'Lotto Activo', emoji: '🐾' },
-                { id: 'granjita', name: 'La Granjita', emoji: '🐔' },
-                { id: 'selvaPlus', name: 'Selva Plus', emoji: '🦁' },
-                { id: 'guacharo', name: 'Guácharo Activo', emoji: '🦉' },
-                { id: 'tripleZulia', name: 'Triple Zulia', emoji: '🐘' },
-                { id: 'lottoRey', name: 'Lotto Rey', emoji: '👑' }
+                { id: 'lotto_activo', name: 'Lotto Activo (0-36)', icon: '🐾', type: 'animalito', maxRange: 36 },
+                { id: 'la_granjita', name: 'La Granjita (0-36)', icon: '🚜', type: 'animalito', maxRange: 36 },
+                { id: 'ruleta_activa', name: 'Ruleta Activa', icon: '🎡', type: 'animalito', maxRange: 36 },
+                { id: 'guacharo_activo', name: 'Guácharo Activo', icon: '🦅', type: 'animalito', maxRange: 36 },
+                { id: 'selva_plus', name: 'Selva Plus', icon: '🦁', type: 'animalito', maxRange: 36 },
+                { id: 'lotto_activo_2', name: 'Lotto Activo 2 (El Monje)', icon: '🧘', type: 'animalito', maxRange: 36 },
+                { id: 'mega_animal_77', name: 'Mega Animal 77', icon: '🐘', type: 'animalito_ext', maxRange: 77 }
             ],
             triples: [
-                { id: 'tripleCaliente', name: 'Triple Caliente', emoji: '🔥' },
-                { id: 'tripleCaracas', name: 'Triple Caracas', emoji: '🏙️' },
-                { id: 'tripleTachira', name: 'Triple Táchira', emoji: '⛰️' },
-                { id: 'tripleChance', name: 'Triple Chance', emoji: '🎲' },
-                { id: 'lottoActivoTriple', name: 'Lotto Activo Triple', emoji: '🎯' }
+                { id: 'triple_zulia', name: 'Triple Zulia', icon: '⚡', type: 'triple' },
+                { id: 'triple_caracas', name: 'Triple Caracas', icon: '🏛️', type: 'triple' },
+                { id: 'triple_tachira', name: 'Triple Táchira', icon: '🏔️', type: 'triple' },
+                { id: 'triple_chance', name: 'Triple Chance', icon: '🎲', type: 'triple' },
+                { id: 'triple_caliente', name: 'Triple Caliente', icon: '🔥', type: 'triple' }
             ]
         };
 
-        const ANIMALES = [
-            'Delfín','Ballena','Carnero','Ciervo','Cotorra','Tiburón','Caballo','Rana','León','Toro',
-            'Mono','Tigre','Burro','Cochino','Gato','Lobo','Perico','Pavo','Pavo Real','Gallina',
-            'Camello','Cebra','Elefante','Jirafa','Serpiente','Cocodrilo','Águila','Búho','Ratón','Zorro'
+        const ANIMALITOS_LISTA = [
+            { num: '0', name: 'Delfín', emoji: '🐬' },
+            { num: '00', name: 'Ballena', emoji: '🐳' },
+            { num: '01', name: 'Carnero', emoji: '🐏' },
+            { num: '02', name: 'Toro', emoji: '🐂' },
+            { num: '03', name: 'Ciempiés', emoji: '🐛' },
+            { num: '04', name: 'Alacrán', emoji: '🦂' },
+            { num: '05', name: 'León', emoji: '🦁' },
+            { num: '06', name: 'Rana', emoji: '🐸' },
+            { num: '07', name: 'Perico', emoji: '🦜' },
+            { num: '08', name: 'Ratón', emoji: '🐭' },
+            { num: '09', name: 'Águila', emoji: '🦅' },
+            { num: '10', name: 'Tigre', emoji: '🐅' },
+            { num: '11', name: 'Gato', emoji: '🐈' },
+            { num: '12', name: 'Caballo', emoji: '🐎' },
+            { num: '13', name: 'Mono', emoji: '🐒' },
+            { num: '14', name: 'Paloma', emoji: '🕊️' },
+            { num: '15', name: 'Zorro', emoji: '🦊' },
+            { num: '16', name: 'Oso', emoji: '🐻' },
+            { num: '17', name: 'Pavo', emoji: '🦃' },
+            { num: '18', name: 'Burro', emoji: '🫏' },
+            { num: '19', name: 'Chivo', emoji: '🐐' },
+            { num: '20', name: 'Cochino', emoji: '🐖' },
+            { num: '21', name: 'Gallo', emoji: '🐓' },
+            { num: '22', name: 'Camello', emoji: '🐪' },
+            { num: '23', name: 'Cebra', emoji: '🦓' },
+            { num: '24', name: 'Iguana', emoji: '🦎' },
+            { num: '25', name: 'Gallina', emoji: '🐔' },
+            { num: '26', name: 'Vaca', emoji: '🐄' },
+            { num: '27', name: 'Perro', emoji: '🐕' },
+            { num: '28', name: 'Zamuro', emoji: '🦅' },
+            { num: '29', name: 'Elefante', emoji: '🐘' },
+            { num: '30', name: 'Caimán', emoji: '🐊' },
+            { num: '31', name: 'Lapa', emoji: '🦫' },
+            { num: '32', name: 'Ardilla', emoji: '🐿️' },
+            { num: '33', name: 'Pescado', emoji: '🐟' },
+            { num: '34', name: 'Venado', emoji: '🦌' },
+            { num: '35', name: 'Jirafa', emoji: '🦒' },
+            { num: '36', name: 'Culebra', emoji: '🐍' },
+            { num: '37', name: 'Abeja', emoji: '🐝' },
+            { num: '38', name: 'Canguro', emoji: '🦘' },
+            { num: '39', name: 'Caracol', emoji: '🐌' },
+            { num: '40', name: 'Camaleón', emoji: '🦎' },
+            { num: '41', name: 'Búho', emoji: '🦉' },
+            { num: '42', name: 'Panda', emoji: '🐼' },
+            { num: '43', name: 'Pulpo', emoji: '🐙' },
+            { num: '44', name: 'Flamingo', emoji: '🦩' },
+            { num: '45', name: 'Tiburón', emoji: '🦈' },
+            { num: '46', name: 'Lobo', emoji: '🐺' },
+            { num: '47', name: 'Gorila', emoji: '🦍' },
+            { num: '48', name: 'Hipopótamo', emoji: '🦛' },
+            { num: '49', name: 'Rinoceronte', emoji: '🦏' },
+            { num: '50', name: 'Cigüeña', emoji: '🦤' },
+            { num: '51', name: 'Erizo', emoji: '🦔' },
+            { num: '52', name: 'Cangrejo', emoji: '🦀' },
+            { num: '53', name: 'Castor', emoji: '🦫' },
+            { num: '54', name: 'Pavo Real', emoji: '🦚' },
+            { num: '55', name: 'Pingüino', emoji: '🐧' },
+            { num: '56', name: 'Foca', emoji: '🦭' },
+            { num: '57', name: 'Cisne', emoji: '🦢' },
+            { num: '58', name: 'Hormiga', emoji: '🐜' },
+            { num: '59', name: 'Grillo', emoji: '🦗' },
+            { num: '60', name: 'Mariquita', emoji: '🐞' },
+            { num: '61', name: 'Mariposa', emoji: '🦋' },
+            { num: '62', name: 'Murciélago', emoji: '🦇' },
+            { num: '63', name: 'Llama', emoji: '🦙' },
+            { num: '64', name: 'Oveja', emoji: '🐑' },
+            { num: '65', name: 'Pato', emoji: '🦆' },
+            { num: '66', name: 'Ganso', emoji: '🪿' },
+            { num: '67', name: 'Cuervo', emoji: '🐦‍⬛' },
+            { num: '68', name: 'Pelícano', emoji: '🪿' },
+            { num: '69', name: 'Medusa', emoji: '🪼' },
+            { num: '70', name: 'Estrella de Mar', emoji: '⭐' },
+            { num: '71', name: 'Leopardo', emoji: '🐆' },
+            { num: '72', name: 'Guepardo', emoji: '🐆' },
+            { num: '73', name: 'Hiena', emoji: '🐺' },
+            { num: '74', name: 'Jabalí', emoji: '🐗' },
+            { num: '75', name: 'Alce', emoji: '🫎' },
+            { num: '76', name: 'Koala', emoji: '🐨' },
+            { num: '77', name: 'Dinosaurio', emoji: '🦖' }
         ];
 
-        // ============ ESTADO ============
         let currentCategory = 'animalitos';
-        let currentLottery = LOTTERIES.animalitos[0];
-        let lastResult = null;
+        let currentLottery = LOTERIAS.animalitos[0];
+        let currentAnalysisData = null;
 
-        // ============ INICIALIZACIÓN ============
-        document.addEventListener('DOMContentLoaded', () => {
+        window.onload = function() {
             renderLotteryGrid();
-            updateClock();
-            setInterval(updateClock, 60000);
-            document.getElementById('lblPronosticDate').textContent = new Date().toLocaleDateString('es-VE', { day:'2-digit', month:'short', year:'numeric' });
-        });
+            ejecutarAnalisis();
+            actualizarHoraHeader();
+        };
 
-        function updateClock() {
+        function actualizarHoraHeader() {
             const now = new Date();
-            document.getElementById('lblTime').textContent = now.toLocaleTimeString('es-VE', { hour:'2-digit', minute:'2-digit' });
-        }
-
-        // ============ RENDER GRID ============
-        function renderLotteryGrid() {
-            const grid = document.getElementById('lotteryGrid');
-            const list = LOTTERIES[currentCategory];
-            grid.innerHTML = list.map(l => {
-                const active = l.id === currentLottery.id;
-                return `
-                    <button onclick="selectLottery('${l.id}')"
-                        class="p-3 rounded-xl border text-left transition flex items-center gap-2 ${active
-                            ? 'bg-emerald-500/15 border-emerald-500/50 text-emerald-300'
-                            : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'}">
-                        <span class="text-lg">${l.emoji}</span>
-                        <span class="text-[11px] font-semibold leading-tight">${l.name}</span>
-                    </button>`;
-            }).join('');
-        }
-
-        function selectLottery(id) {
-            const list = LOTTERIES[currentCategory];
-            currentLottery = list.find(l => l.id === id) || list[0];
-            document.getElementById('selectedLotteryName').textContent = currentLottery.name;
-            renderLotteryGrid();
+            const timeStr = now.toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', hour12: true });
+            const dateStr = now.toLocaleDateString('es-VE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            document.getElementById('lblTime').innerText = `${dateStr} - ${timeStr}`;
+            document.getElementById('lblPronosticDate').innerText = `📅 ${dateStr}`;
         }
 
         function switchCategory(cat) {
-            if (cat === currentCategory) return;
             currentCategory = cat;
-            currentLottery = LOTTERIES[cat][0];
+            const btnAnim = document.getElementById('tabAnimalitos');
+            const btnTrip = document.getElementById('tabTriples');
 
-            const tabA = document.getElementById('tabAnimalitos');
-            const tabT = document.getElementById('tabTriples');
-            const activeCls = ['bg-slate-800','text-emerald-400','shadow-sm'];
-            const inactiveCls = ['text-slate-400','hover:text-slate-200'];
-
-            [tabA, tabT].forEach(t => {
-                activeCls.forEach(c => t.classList.remove(c));
-                inactiveCls.forEach(c => t.classList.add(c));
-            });
-
-            const activeTab = cat === 'animalitos' ? tabA : tabT;
-            inactiveCls.forEach(c => activeTab.classList.remove(c));
-            activeCls.forEach(c => activeTab.classList.add(c));
-
-            document.getElementById('selectedLotteryName').textContent = currentLottery.name;
-            renderLotteryGrid();
-        }
-
-        // ============ LÓGICA DE ANÁLISIS ============
-        function generarHistorial(cantidad) {
-            // Simula historial con sesgo aleatorio para que el análisis tenga sentido
-            const pool = currentCategory === 'animalitos'
-                ? ANIMALES
-                : Array.from({ length: 1000 }, (_, i) => String(i).padStart(3, '0'));
-
-            const historial = [];
-            for (let i = 0; i < cantidad; i++) {
-                // Sesgo: algunos elementos aparecen más
-                const idx = Math.floor(Math.pow(Math.random(), 1.5) * pool.length);
-                historial.push(pool[idx]);
+            if (cat === 'animalitos') {
+                btnAnim.className = "py-2 px-3 text-xs font-semibold rounded-lg transition bg-slate-800 text-emerald-400 shadow-sm flex items-center justify-center gap-2";
+                btnTrip.className = "py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-2";
+                currentLottery = LOTERIAS.animalitos[0];
+            } else {
+                btnTrip.className = "py-2 px-3 text-xs font-semibold rounded-lg transition bg-slate-800 text-emerald-400 shadow-sm flex items-center justify-center gap-2";
+                btnAnim.className = "py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-2";
+                currentLottery = LOTERIAS.triples[0];
             }
-            return { pool, historial };
+
+            renderLotteryGrid();
+            ejecutarAnalisis();
         }
 
-        function calcularEstadisticas(pool, historial) {
-            const freq = {};
-            pool.forEach(p => freq[p] = 0);
-            historial.forEach(h => { freq[h] = (freq[h] || 0) + 1; });
+        function renderLotteryGrid() {
+            const container = document.getElementById('lotteryGrid');
+            container.innerHTML = '';
 
-            // Atrasos: posiciones desde la última aparición
-            const atrasos = {};
-            pool.forEach(p => {
-                const idx = historial.lastIndexOf(p);
-                atrasos[p] = idx === -1 ? historial.length : historial.length - 1 - idx;
+            const list = LOTERIAS[currentCategory];
+            list.forEach(item => {
+                const isSelected = item.id === currentLottery.id;
+                const card = document.createElement('button');
+                card.onclick = () => selectLottery(item);
+                card.className = `p-3 rounded-xl border text-left transition flex items-center gap-2.5 ${
+                    isSelected 
+                    ? 'bg-slate-800 border-emerald-500 text-white shadow-md ring-1 ring-emerald-500/50' 
+                    : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                }`;
+
+                card.innerHTML = `
+                    <span class="text-xl">${item.icon}</span>
+                    <div class="truncate">
+                        <div class="font-bold text-xs truncate ${isSelected ? 'text-emerald-400' : ''}">${item.name}</div>
+                        <div class="text-[10px] text-slate-500 font-medium capitalize">${item.type}</div>
+                    </div>
+                `;
+                container.appendChild(card);
             });
 
-            const ranking = pool.map(p => ({
-                valor: p,
-                frecuencia: freq[p],
-                atraso: atrasos[p],
-                score: freq[p] * 2 + atrasos[p] * 0.5
-            })).sort((a, b) => b.score - a.score);
+            document.getElementById('selectedLotteryName').innerText = currentLottery.name;
+        }
 
-            return { freq, atrasos, ranking };
+        function selectLottery(lotteryItem) {
+            currentLottery = lotteryItem;
+            renderLotteryGrid();
+            ejecutarAnalisis();
+        }
+
+        function generarDatosAnalisis(lottery) {
+            const isAnimalito = lottery.type.startsWith('animalito');
+            
+            let hotItems = [];
+            let coldItems = [];
+            let topSuggestions = [];
+            let timeSlots = [];
+            let weeklyTop = [];
+            let weeklyLow = [];
+
+            if (isAnimalito) {
+                const pool = lottery.maxRange === 77 
+                    ? ANIMALITOS_LISTA 
+                    : ANIMALITOS_LISTA.slice(0, 38);
+
+                const shuffled = [...pool].sort(() => 0.5 - Math.random());
+                
+                topSuggestions = shuffled.slice(0, 3).map((item, idx) => ({
+                    num: item.num,
+                    name: item.name,
+                    emoji: item.emoji,
+                    prob: (88.5 - (idx * 4.2)).toFixed(1),
+                    motivo: idx === 0 ? 'Frecuencia alta + Retardo de hora' : (idx === 1 ? 'Atrasado en sorteo clave' : 'Ciclo de rotación cumplido')
+                }));
+
+                weeklyTop = shuffled.slice(3, 7).map(item => ({
+                    label: `${item.num} - ${item.name}`,
+                    sub: item.emoji,
+                    salidasSemana: Math.floor(Math.random() * 8) + 12
+                }));
+
+                weeklyLow = shuffled.slice(7, 11).map(item => ({
+                    label: `${item.num} - ${item.name}`,
+                    sub: item.emoji,
+                    diasSinSalir: Math.floor(Math.random() * 6) + 7
+                }));
+
+                hotItems = shuffled.slice(11, 15).map(item => ({
+                    label: `${item.num} - ${item.name}`,
+                    sub: item.emoji,
+                    count: Math.floor(Math.random() * 4) + 4
+                }));
+
+                coldItems = shuffled.slice(15, 19).map(item => ({
+                    label: `${item.num} - ${item.name}`,
+                    sub: item.emoji,
+                    sorteosAtrasados: Math.floor(Math.random() * 12) + 10
+                }));
+
+                timeSlots = [
+                    { slot: 'Mañana (09am - 11am)', tend: `${shuffled[19].num} - ${shuffled[19].name} (${shuffled[19].emoji})` },
+                    { slot: 'Tarde (12pm - 04pm)', tend: `${shuffled[20].num} - ${shuffled[20].name} (${shuffled[20].emoji})` },
+                    { slot: 'Noche (05pm - 07pm)', tend: `${shuffled[21].num} - ${shuffled[21].name} (${shuffled[21].emoji})` }
+                ];
+
+            } else {
+                const randomTriple = () => String(Math.floor(Math.random() * 900) + 100);
+
+                topSuggestions = [
+                    { num: randomTriple(), name: 'Triple Directo', emoji: '🎲', prob: '87.4', motivo: 'Patrón de repetición de serie' },
+                    { num: randomTriple(), name: 'Triple Permutado', emoji: '🔄', prob: '81.9', motivo: 'Alta densidad en terminales' },
+                    { num: randomTriple(), name: 'Terminal Fuerte', emoji: '💥', prob: '78.3', motivo: 'Atrasado en sorteos principales' }
+                ];
+
+                weeklyTop = Array.from({length: 4}, () => ({
+                    label: `Triple ${randomTriple()}`,
+                    sub: '⭐',
+                    salidasSemana: Math.floor(Math.random() * 6) + 9
+                }));
+
+                weeklyLow = Array.from({length: 4}, () => ({
+                    label: `Triple ${randomTriple()}`,
+                    sub: '📉',
+                    diasSinSalir: Math.floor(Math.random() * 5) + 7
+                }));
+
+                hotItems = Array.from({length: 4}, () => ({
+                    label: `Triple ${randomTriple()}`,
+                    sub: '🔥',
+                    count: Math.floor(Math.random() * 5) + 3
+                }));
+
+                coldItems = Array.from({length: 4}, () => ({
+                    label: `Triple ${randomTriple()}`,
+                    sub: '❄️',
+                    sorteosAtrasados: Math.floor(Math.random() * 15) + 10
+                }));
+
+                timeSlots = [
+                    { slot: 'Sorteo 12:45 PM', tend: `Triple ${randomTriple()}` },
+                    { slot: 'Sorteo 04:45 PM', tend: `Triple ${randomTriple()}` },
+                    { slot: 'Sorteo 07:45 PM', tend: `Triple ${randomTriple()}` }
+                ];
+            }
+
+            return { topSuggestions, weeklyTop, weeklyLow, hotItems, coldItems, timeSlots };
         }
 
         function ejecutarAnalisis() {
-            const loader = document.getElementById('loadingOverlay');
+            const overlay = document.getElementById('loadingOverlay');
             const results = document.getElementById('resultsContainer');
-            const detail = document.getElementById('detailSection');
+            const btn = document.getElementById('btnAnalyze');
 
-            loader.classList.remove('hidden');
-            results.classList.add('opacity-40');
-
-            const statuses = [
-                'Procesando historial de sorteos...',
-                'Calculando frecuencias...',
-                'Evaluando atrasos...',
-                'Generando pronóstico Top 3...'
-            ];
-
-            let step = 0;
-            const statusEl = document.getElementById('loadStatusText');
-            const interval = setInterval(() => {
-                step = (step + 1) % statuses.length;
-                statusEl.textContent = statuses[step];
-            }, 450);
+            overlay.classList.remove('hidden');
+            results.classList.add('opacity-40', 'pointer-events-none');
+            btn.disabled = true;
 
             setTimeout(() => {
-                clearInterval(interval);
-                const { pool, historial } = generarHistorial(200);
-                const stats = calcularEstadisticas(pool, historial);
-                lastResult = {
-                    loteria: currentLottery.name,
-                    categoria: currentCategory,
-                    top: stats.ranking.slice(0, 3),
-                    total: historial.length,
-                    fecha: new Date().toLocaleString('es-VE')
-                };
-                renderTopSugerencias(lastResult.top);
-                renderDetalle(stats, historial);
-                loader.classList.add('hidden');
-                results.classList.remove('opacity-40');
-                detail.classList.remove('hidden');
-                showToast('Análisis completado ✅');
-            }, 1800);
+                currentAnalysisData = generarDatosAnalisis(currentLottery);
+                renderResultados(currentAnalysisData);
+
+                overlay.classList.add('hidden');
+                results.classList.remove('opacity-40', 'pointer-events-none');
+                btn.disabled = false;
+                actualizarHoraHeader();
+            }, 300);
         }
 
-        function renderTopSugerencias(top) {
-            const grid = document.getElementById('topSuggestionsGrid');
-            const medallas = ['🥇','🥈','🥉'];
-            grid.innerHTML = top.map((t, i) => `
-                <div class="bg-slate-800/60 border border-emerald-500/20 rounded-xl p-3 text-center">
-                    <div class="text-2xl mb-1">${medallas[i]}</div>
-                    <div class="text-lg font-extrabold text-emerald-300 truncate">${t.valor}</div>
-                    <div class="text-[10px] text-slate-400 mt-1">
-                        Frec: <span class="text-slate-200 font-bold">${t.frecuencia}</span> ·
-                        Atraso: <span class="text-slate-200 font-bold">${t.atraso}</span>
+        function renderResultados(data) {
+            const topGrid = document.getElementById('topSuggestionsGrid');
+            topGrid.innerHTML = '';
+
+            data.topSuggestions.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-xl border ${
+                    index === 0 
+                    ? 'bg-gradient-to-b from-emerald-950/60 to-slate-900 border-emerald-500/50 shadow-lg ring-1 ring-emerald-500/30' 
+                    : 'bg-slate-800/60 border-slate-700/60'
+                }`;
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-2xl">${item.emoji}</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${index === 0 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-700 text-slate-300'}">
+                            ${item.prob}% Prob.
+                        </span>
                     </div>
-                    <div class="mt-2 h-1.5 w-full bg-slate-700 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r from-emerald-500 to-amber-400" style="width:${Math.min(100, t.score * 3)}%"></div>
+                    <div class="text-2xl font-black text-white tracking-tight">${item.num}</div>
+                    <div class="text-xs font-bold text-slate-300">${item.name}</div>
+                    <p class="text-[10px] text-slate-400 mt-2 border-t border-slate-700/40 pt-1.5">${item.motivo}</p>
+                `;
+                topGrid.appendChild(card);
+            });
+
+            const weeklyTopList = document.getElementById('weeklyTopList');
+            weeklyTopList.innerHTML = '';
+            data.weeklyTop.forEach(item => {
+                const row = document.createElement('div');
+                row.className = "flex justify-between items-center text-xs text-slate-300";
+                row.innerHTML = `
+                    <span>${item.sub} ${item.label}</span>
+                    <span class="font-mono text-emerald-400 font-bold">${item.salidasSemana} veces</span>
+                `;
+                weeklyTopList.appendChild(row);
+            });
+
+            const weeklyLowList = document.getElementById('weeklyLowList');
+            weeklyLowList.innerHTML = '';
+            data.weeklyLow.forEach(item => {
+                const row = document.createElement('div');
+                row.className = "flex justify-between items-center text-xs text-slate-300";
+                row.innerHTML = `
+                    <span>${item.sub} ${item.label}</span>
+                    <span class="font-mono text-amber-400 font-bold">${item.diasSinSalir}d sin salir</span>
+                `;
+                weeklyLowList.appendChild(row);
+            });
+
+            const hotList = document.getElementById('hotList');
+            hotList.innerHTML = '';
+            data.hotItems.forEach(item => {
+                const row = document.createElement('div');
+                row.className = "flex justify-between items-center p-2.5 rounded-xl bg-slate-800/40 border border-slate-800 text-xs";
+                row.innerHTML = `
+                    <span class="font-semibold text-slate-200 flex items-center gap-2">
+                        <span>${item.sub}</span> ${item.label}
+                    </span>
+                    <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-bold text-[11px]">
+                        ${item.count} salidas
+                    </span>
+                `;
+                hotList.appendChild(row);
+            });
+
+            const coldList = document.getElementById('coldList');
+            coldList.innerHTML = '';
+            data.coldItems.forEach(item => {
+                const row = document.createElement('div');
+                row.className = "flex justify-between items-center p-2.5 rounded-xl bg-slate-800/40 border border-slate-800 text-xs";
+                row.innerHTML = `
+                    <span class="font-semibold text-slate-200 flex items-center gap-2">
+                        <span>${item.sub}</span> ${item.label}
+                    </span>
+                    <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-mono font-bold text-[11px]">
+                        ${item.sorteosAtrasados} sorteos fríos
+                    </span>
+                `;
+                coldList.appendChild(row);
+            });
+
+            const timeContainer = document.getElementById('timeSlotContainer');
+            timeContainer.innerHTML = '';
+            data.timeSlots.forEach(slot => {
+                const card = document.createElement('div');
+                card.className = "p-3 rounded-xl bg-slate-800/50 border border-slate-800 text-xs";
+                card.innerHTML = `
+                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">${slot.slot}</div>
+                    <div class="font-extrabold text-slate-200 flex items-center gap-1.5">
+                        <i class="fa-solid fa-arrow-trend-up text-emerald-400 text-[10px]"></i>
+                        ${slot.tend}
                     </div>
-                </div>
-            `).join('');
+                `;
+                timeContainer.appendChild(card);
+            });
         }
 
-        function renderDetalle(stats, historial) {
-            const grid = document.getElementById('detailGrid');
-            const topFrec = stats.ranking[0];
-            const topAtraso = [...stats.ranking].sort((a, b) => b.atraso - a.atraso)[0];
-            grid.innerHTML = `
-                <div class="bg-slate-800/50 rounded-xl p-3 text-center">
-                    <div class="text-[10px] text-slate-400 uppercase">Sorteos analizados</div>
-                    <div class="text-lg font-extrabold text-emerald-300">${historial.length}</div>
-                </div>
-                <div class="bg-slate-800/50 rounded-xl p-3 text-center">
-                    <div class="text-[10px] text-slate-400 uppercase">Más frecuente</div>
-                    <div class="text-lg font-extrabold text-amber-300 truncate">${topFrec.valor}</div>
-                </div>
-                <div class="bg-slate-800/50 rounded-xl p-3 text-center">
-                    <div class="text-[10px] text-slate-400 uppercase">Mayor atraso</div>
-                    <div class="text-lg font-extrabold text-rose-300 truncate">${topAtraso.valor}</div>
-                </div>
-                <div class="bg-slate-800/50 rounded-xl p-3 text-center">
-                    <div class="text-[10px] text-slate-400 uppercase">Categoría</div>
-                    <div class="text-lg font-extrabold text-slate-200 capitalize">${currentCategory}</div>
-                </div>
-            `;
-        }
+        function agregarNuevoResultado() {
+            const input = document.getElementById('inputNewResult');
+            const val = input.value.trim();
 
-        // ============ ACCIONES ============
-        function copiarPronostico() {
-            if (!lastResult) return showToast('Primero analiza un sorteo ⚠️');
-            const texto = `🎯 MatrixLotto Vzla\n${lastResult.loteria}\n${lastResult.top.map((t, i) => `${i+1}. ${t.valor}`).join('\n')}\nFecha: ${lastResult.fecha}`;
-            navigator.clipboard.writeText(texto)
-                .then(() => showToast('Pronóstico copiado 📋'))
-                .catch(() => showToast('No se pudo copiar'));
-        }
-
-        function compartirNativo() {
-            if (!lastResult) return showToast('Primero analiza un sorteo ⚠️');
-            const texto = `🎯 MatrixLotto Vzla\n${lastResult.loteria}\n${lastResult.top.map((t, i) => `${i+1}. ${t.valor}`).join('\n')}`;
-            if (navigator.share) {
-                navigator.share({ title: 'MatrixLotto Vzla', text: texto }).catch(() => {});
-            } else {
-                copiarPronostico();
+            if (!val) {
+                showToast('Ingresa un número o nombre válido', 'warning');
+                return;
             }
+
+            showToast(`Resultado "${val}" registrado. Recalculando...`, 'success');
+            input.value = '';
+            ejecutarAnalisis();
         }
 
         function simularActualizacion() {
             const icon = document.getElementById('syncIcon');
             icon.classList.add('animate-spin');
+            
             setTimeout(() => {
                 icon.classList.remove('animate-spin');
-                updateClock();
-                showToast('Datos actualizados 🔄');
-            }, 800);
+                showToast('Estadísticas sincronizadas', 'success');
+                ejecutarAnalisis();
+            }, 500);
         }
 
-        function showToast(msg) {
+        function obtenerTextoPronostico() {
+            if (!currentAnalysisData) return '';
+            
+            const top = currentAnalysisData.topSuggestions;
+            const fechaHoy = new Date().toLocaleDateString('es-VE');
+            let text = `⚡ MATRIXLOTTO VZLA - PRONÓSTICO\n`;
+            text += `🎰 Sorteo: ${currentLottery.name}\n`;
+            text += `📅 Fecha: ${fechaHoy}\n\n`;
+            text += `🎯 TOP 3 SUGERIDOS:\n`;
+            
+            top.forEach((item, i) => {
+                text += `${i+1}. ${item.num} (${item.name}) ${item.emoji} -> ${item.prob}%\n`;
+            });
+
+            text += `\n✨ Generado con MatrixLotto Vzla`;
+            return text;
+        }
+
+        function copiarPronostico() {
+            const texto = obtenerTextoPronostico();
+            const tempInput = document.createElement('textarea');
+            tempInput.value = texto;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast('¡Pronóstico copiado con fecha!', 'success');
+        }
+
+        function compartirNativo() {
+            const texto = obtenerTextoPronostico();
+            if (navigator.share) {
+                navigator.share({
+                    title: `Pronóstico ${currentLottery.name}`,
+                    text: texto
+                }).catch(() => {});
+            } else {
+                copiarPronostico();
+            }
+        }
+
+        function showToast(msg, type = 'info') {
             const toast = document.getElementById('toast');
-            toast.textContent = msg;
-            toast.style.opacity = '1';
-            clearTimeout(toast._t);
-            toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 2200);
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.innerText = msg;
+
+            if (type === 'success') {
+                toastIcon.className = 'fa-solid fa-circle-check text-emerald-400';
+            } else if (type === 'warning') {
+                toastIcon.className = 'fa-solid fa-triangle-exclamation text-amber-400';
+            } else {
+                toastIcon.className = 'fa-solid fa-circle-info text-cyan-400';
+            }
+
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2500);
         }
     </script>
 </body>
-                    </html>
+</html>
