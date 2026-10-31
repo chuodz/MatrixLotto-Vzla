@@ -408,7 +408,6 @@
         let currentLottery = LOTERIAS.animalitos[0];
         let currentAnalysisData = null;
 
-        // Memoria caché segura por ID de lotería
         let cacheAnalisisPorLoteria = {};
         let contadorCambiosPorLoteria = {};
 
@@ -421,4 +420,106 @@
         function actualizarHoraHeader() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', hour12: true });
-            const dateStr = now.toLocaleDateString('es-VE', { day: '2-digit', month: '2-digit', year:
+            const dateStr = now.toLocaleDateString('es-VE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            document.getElementById('lblTime').innerText = `${dateStr} - ${timeStr}`;
+            document.getElementById('lblPronosticDate').innerText = `📅 ${dateStr}`;
+        }
+
+        function switchCategory(cat) {
+            currentCategory = cat;
+            const btnAnim = document.getElementById('tabAnimalitos');
+            const btnTrip = document.getElementById('tabTriples');
+
+            if (cat === 'animalitos') {
+                btnAnim.className = "py-2 px-3 text-xs font-semibold rounded-lg transition bg-slate-800 text-emerald-400 shadow-sm flex items-center justify-center gap-2";
+                btnTrip.className = "py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-2";
+                currentLottery = LOTERIAS.animalitos[0];
+            } else {
+                btnTrip.className = "py-2 px-3 text-xs font-semibold rounded-lg transition bg-slate-800 text-emerald-400 shadow-sm flex items-center justify-center gap-2";
+                btnAnim.className = "py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-2";
+                currentLottery = LOTERIAS.triples[0];
+            }
+
+            renderLotteryGrid();
+            ejecutarAnalisis();
+        }
+
+        function renderLotteryGrid() {
+            const container = document.getElementById('lotteryGrid');
+            container.innerHTML = '';
+
+            const list = LOTERIAS[currentCategory];
+            list.forEach(item => {
+                const isSelected = item.id === currentLottery.id;
+                const card = document.createElement('button');
+                card.onclick = () => selectLottery(item);
+                card.className = `p-3 rounded-xl border text-left transition flex items-center gap-2.5 ${
+                    isSelected 
+                    ? 'bg-slate-800 border-emerald-500 text-white shadow-md ring-1 ring-emerald-500/50' 
+                    : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                }`;
+
+                card.innerHTML = `
+                    <span class="text-xl">${item.icon}</span>
+                    <div class="truncate">
+                        <div class="font-bold text-xs truncate ${isSelected ? 'text-emerald-400' : ''}">${item.name}</div>
+                        <div class="text-[10px] text-slate-500 font-medium capitalize">${item.type}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('selectedLotteryName').innerText = currentLottery.name;
+        }
+
+        function selectLottery(lotteryItem) {
+            currentLottery = lotteryItem;
+            renderLotteryGrid();
+            ejecutarAnalisis();
+        }
+
+        function generarDatosAnalisis(lottery, versionDatos) {
+            const isAnimalito = lottery.type.startsWith('animalito');
+            
+            // Generador seguro basado en semilla numérica fija
+            let seed = 1000;
+            const fullStr = lottery.id + "_" + versionDatos;
+            for (let i = 0; i < fullStr.length; i++) {
+                seed += fullStr.charCodeAt(i) * (i + 1);
+            }
+
+            function numeroSeguro(indice) {
+                let x = Math.sin(seed + indice) * 10000;
+                return x - Math.floor(x);
+            }
+
+            let topSuggestions = [];
+            let weeklyTop = [];
+            let weeklyLow = [];
+            let hotItems = [];
+            let coldItems = [];
+            let timeSlots = [];
+
+            if (isAnimalito) {
+                const pool = lottery.maxRange === 77 
+                    ? ANIMALITOS_LISTA 
+                    : ANIMALITOS_LISTA.slice(0, 38);
+
+                // Seleccionar elementos únicos de forma segura sin riesgo de undefined
+                let indicesUsados = [];
+                function obtenerItemUnico(offset) {
+                    let idx = Math.floor(numeroSeguro(offset) * pool.length);
+                    while (indicesUsados.includes(idx)) {
+                        idx = (idx + 1) % pool.length;
+                    }
+                    indicesUsados.push(idx);
+                    return pool[idx];
+                }
+
+                topSuggestions = [0, 1, 2].map((i) => {
+                    let item = obtenerItemUnico(i * 10);
+                    return {
+                        num: item.num,
+                        name: item.name,
+                        emoji: item.emoji,
+                        prob: (88.5
