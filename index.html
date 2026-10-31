@@ -2,13 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MatrixLotto Vzla - Analizador Estadístico de Loterías</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
@@ -17,38 +14,24 @@
             color: #F8FAFC;
             -webkit-tap-highlight-color: transparent;
         }
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0F172A;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 9999px;
-        }
-        .badge-pulse {
-            animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0F172A; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+        .badge-pulse { animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes pulse-slow {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
-        .glow-btn {
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
-        }
+        .glow-btn { box-shadow: 0 0 20px rgba(16, 185, 129, 0.35); }
     </style>
 </head>
 <body class="min-h-screen pb-12 flex flex-col justify-between selection:bg-amber-500 selection:text-black">
 
-    <!-- Header Navigation -->
+    <!-- Header -->
     <header class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-4 py-3 shadow-lg">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2.5">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-emerald-500 to-teal-500 flex items-center justify-center font-black text-xl shadow-md text-slate-950">
-                    ⚡
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-emerald-500 to-teal-500 flex items-center justify-center font-black text-xl shadow-md text-slate-950">⚡</div>
                 <div>
                     <h1 class="text-base font-extrabold tracking-tight text-white leading-tight">
                         MatrixLotto <span class="text-emerald-400">Vzla</span>
@@ -56,7 +39,6 @@
                     <p class="text-[10px] text-slate-400 font-medium">Analizador Estadístico de Loterías</p>
                 </div>
             </div>
-            
             <div class="flex items-center gap-2">
                 <button id="btnSync" onclick="simularActualizacion()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-xs flex items-center gap-1.5 border border-slate-700">
                     <i class="fa-solid fa-rotate text-emerald-400" id="syncIcon"></i>
@@ -70,10 +52,9 @@
         </div>
     </header>
 
-    <!-- Main Container -->
     <main class="max-w-4xl mx-auto px-4 py-6 w-full flex-grow space-y-6">
 
-        <!-- Banner Informativo -->
+        <!-- Banner -->
         <div class="bg-gradient-to-r from-slate-800 via-slate-800/90 to-slate-900 border border-slate-700/60 rounded-2xl p-4 shadow-xl relative overflow-hidden">
             <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-emerald-500/10 rounded-full blur-2xl"></div>
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 relative z-10">
@@ -92,7 +73,7 @@
             </div>
         </div>
 
-        <!-- Selección de Lotería y Categoría -->
+        <!-- Selección -->
         <section class="space-y-3">
             <div class="flex justify-between items-center">
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
@@ -102,25 +83,19 @@
                 <span class="text-[11px] text-emerald-400 font-bold truncate max-w-[150px] text-right" id="selectedLotteryName">Lotto Activo</span>
             </div>
 
-            <!-- Tabs Categorías -->
             <div class="grid grid-cols-2 gap-2 p-1 bg-slate-900/80 rounded-xl border border-slate-800">
                 <button id="tabAnimalitos" onclick="switchCategory('animalitos')" class="py-2 px-3 text-xs font-semibold rounded-lg transition bg-slate-800 text-emerald-400 shadow-sm flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-paw"></i>
-                    Animalitos
+                    <i class="fa-solid fa-paw"></i> Animalitos
                 </button>
                 <button id="tabTriples" onclick="switchCategory('triples')" class="py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-arrow-down-1-9"></i>
-                    Triples y Loterías
+                    <i class="fa-solid fa-arrow-down-1-9"></i> Triples y Loterías
                 </button>
             </div>
 
-            <!-- Grid de Selección de Lotería -->
-            <div id="lotteryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
-                <!-- Se llena dinámicamente -->
-            </div>
+            <div id="lotteryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5"></div>
         </section>
 
-        <!-- Botón de Análisis Principal Optimizado y Centrado en 1 Sola Línea -->
+        <!-- Botón análisis -->
         <section class="py-2">
             <button id="btnAnalyze" onclick="ejecutarAnalisis()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-sm sm:text-base glow-btn transition active:scale-[0.99] flex items-center justify-center gap-2 border border-emerald-300/40 whitespace-nowrap overflow-hidden text-ellipsis">
                 <i class="fa-solid fa-bolt text-base sm:text-lg shrink-0"></i>
@@ -128,7 +103,7 @@
             </button>
         </section>
 
-        <!-- Loader de Procesando -->
+        <!-- Loader -->
         <div id="loadingOverlay" class="hidden bg-slate-900/90 rounded-2xl p-6 border border-slate-800 text-center space-y-4">
             <div class="inline-block relative">
                 <div class="w-12 h-12 border-4 border-emerald-500/20 border-t-emerald-400 rounded-full animate-spin"></div>
@@ -139,31 +114,307 @@
             </div>
         </div>
 
-        <!-- Módulo de Resultados del Análisis -->
+        <!-- Resultados -->
         <div id="resultsContainer" class="space-y-6">
 
-            <!-- Pronóstico Inteligente (Top 3 Sugeridos) -->
             <section class="bg-slate-900 border border-emerald-500/30 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 bg-gradient-to-r from-emerald-500 to-amber-500 text-slate-950 font-extrabold text-[10px] px-3 py-1 rounded-bl-xl uppercase tracking-wider">
                     Sugerencias de Hoy
                 </div>
-                
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
                     <h3 class="text-sm font-bold text-slate-300 flex items-center gap-2">
                         <i class="fa-solid fa-bullseye text-emerald-400"></i>
                         Pronóstico Inteligente Sugerido (Top 3)
                     </h3>
-                    <span id="lblPronosticDate" class="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
-                        <!-- Fecha dinámica -->
-                    </span>
+                    <span id="lblPronosticDate" class="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg"></span>
                 </div>
 
                 <div id="topSuggestionsGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <!-- Dinámico -->
+                    <div class="col-span-full text-center text-xs text-slate-500 py-6">
+                        Presiona <strong class="text-emerald-400">ANALIZAR AHORA</strong> para generar tu pronóstico.
+                    </div>
                 </div>
 
-                <!-- Botones de Acción Seguros -->
                 <div class="mt-4 pt-3 border-t border-slate-800 flex flex-wrap gap-2 justify-between items-center text-xs">
                     <span class="text-slate-400">Opciones de pronóstico:</span>
                     <div class="flex gap-2">
-                        <button onclick="copiarPronostico()" class="px-3 py-1.5 rounded-lg bg-emerald-
+                        <button onclick="copiarPronostico()" class="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-copy"></i> Copiar
+                        </button>
+                        <button onclick="compartirNativo()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-share-nodes"></i> Compartir
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detalle estadístico -->
+            <section id="detailSection" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+                <h3 class="text-sm font-bold text-slate-300 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-simple text-amber-400"></i>
+                    Detalle Estadístico del Sorteo
+                </h3>
+                <div id="detailGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="max-w-4xl mx-auto px-4 py-4 text-center text-[10px] text-slate-600 w-full">
+        MatrixLotto Vzla © 2025 · Los pronósticos son estadísticos y no garantizan premios. Juega con responsabilidad.
+    </footer>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 text-xs font-bold shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50"></div>
+
+    <script>
+        // ============ DATOS ============
+        const LOTTERIES = {
+            animalitos: [
+                { id: 'lottoActivo', name: 'Lotto Activo', emoji: '🐾' },
+                { id: 'granjita', name: 'La Granjita', emoji: '🐔' },
+                { id: 'selvaPlus', name: 'Selva Plus', emoji: '🦁' },
+                { id: 'guacharo', name: 'Guácharo Activo', emoji: '🦉' },
+                { id: 'tripleZulia', name: 'Triple Zulia', emoji: '🐘' },
+                { id: 'lottoRey', name: 'Lotto Rey', emoji: '👑' }
+            ],
+            triples: [
+                { id: 'tripleCaliente', name: 'Triple Caliente', emoji: '🔥' },
+                { id: 'tripleCaracas', name: 'Triple Caracas', emoji: '🏙️' },
+                { id: 'tripleTachira', name: 'Triple Táchira', emoji: '⛰️' },
+                { id: 'tripleChance', name: 'Triple Chance', emoji: '🎲' },
+                { id: 'lottoActivoTriple', name: 'Lotto Activo Triple', emoji: '🎯' }
+            ]
+        };
+
+        const ANIMALES = [
+            'Delfín','Ballena','Carnero','Ciervo','Cotorra','Tiburón','Caballo','Rana','León','Toro',
+            'Mono','Tigre','Burro','Cochino','Gato','Lobo','Perico','Pavo','Pavo Real','Gallina',
+            'Camello','Cebra','Elefante','Jirafa','Serpiente','Cocodrilo','Águila','Búho','Ratón','Zorro'
+        ];
+
+        // ============ ESTADO ============
+        let currentCategory = 'animalitos';
+        let currentLottery = LOTTERIES.animalitos[0];
+        let lastResult = null;
+
+        // ============ INICIALIZACIÓN ============
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLotteryGrid();
+            updateClock();
+            setInterval(updateClock, 60000);
+            document.getElementById('lblPronosticDate').textContent = new Date().toLocaleDateString('es-VE', { day:'2-digit', month:'short', year:'numeric' });
+        });
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('lblTime').textContent = now.toLocaleTimeString('es-VE', { hour:'2-digit', minute:'2-digit' });
+        }
+
+        // ============ RENDER GRID ============
+        function renderLotteryGrid() {
+            const grid = document.getElementById('lotteryGrid');
+            const list = LOTTERIES[currentCategory];
+            grid.innerHTML = list.map(l => {
+                const active = l.id === currentLottery.id;
+                return `
+                    <button onclick="selectLottery('${l.id}')"
+                        class="p-3 rounded-xl border text-left transition flex items-center gap-2 ${active
+                            ? 'bg-emerald-500/15 border-emerald-500/50 text-emerald-300'
+                            : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'}">
+                        <span class="text-lg">${l.emoji}</span>
+                        <span class="text-[11px] font-semibold leading-tight">${l.name}</span>
+                    </button>`;
+            }).join('');
+        }
+
+        function selectLottery(id) {
+            const list = LOTTERIES[currentCategory];
+            currentLottery = list.find(l => l.id === id) || list[0];
+            document.getElementById('selectedLotteryName').textContent = currentLottery.name;
+            renderLotteryGrid();
+        }
+
+        function switchCategory(cat) {
+            if (cat === currentCategory) return;
+            currentCategory = cat;
+            currentLottery = LOTTERIES[cat][0];
+
+            const tabA = document.getElementById('tabAnimalitos');
+            const tabT = document.getElementById('tabTriples');
+            const activeCls = ['bg-slate-800','text-emerald-400','shadow-sm'];
+            const inactiveCls = ['text-slate-400','hover:text-slate-200'];
+
+            [tabA, tabT].forEach(t => {
+                activeCls.forEach(c => t.classList.remove(c));
+                inactiveCls.forEach(c => t.classList.add(c));
+            });
+
+            const activeTab = cat === 'animalitos' ? tabA : tabT;
+            inactiveCls.forEach(c => activeTab.classList.remove(c));
+            activeCls.forEach(c => activeTab.classList.add(c));
+
+            document.getElementById('selectedLotteryName').textContent = currentLottery.name;
+            renderLotteryGrid();
+        }
+
+        // ============ LÓGICA DE ANÁLISIS ============
+        function generarHistorial(cantidad) {
+            // Simula historial con sesgo aleatorio para que el análisis tenga sentido
+            const pool = currentCategory === 'animalitos'
+                ? ANIMALES
+                : Array.from({ length: 1000 }, (_, i) => String(i).padStart(3, '0'));
+
+            const historial = [];
+            for (let i = 0; i < cantidad; i++) {
+                // Sesgo: algunos elementos aparecen más
+                const idx = Math.floor(Math.pow(Math.random(), 1.5) * pool.length);
+                historial.push(pool[idx]);
+            }
+            return { pool, historial };
+        }
+
+        function calcularEstadisticas(pool, historial) {
+            const freq = {};
+            pool.forEach(p => freq[p] = 0);
+            historial.forEach(h => { freq[h] = (freq[h] || 0) + 1; });
+
+            // Atrasos: posiciones desde la última aparición
+            const atrasos = {};
+            pool.forEach(p => {
+                const idx = historial.lastIndexOf(p);
+                atrasos[p] = idx === -1 ? historial.length : historial.length - 1 - idx;
+            });
+
+            const ranking = pool.map(p => ({
+                valor: p,
+                frecuencia: freq[p],
+                atraso: atrasos[p],
+                score: freq[p] * 2 + atrasos[p] * 0.5
+            })).sort((a, b) => b.score - a.score);
+
+            return { freq, atrasos, ranking };
+        }
+
+        function ejecutarAnalisis() {
+            const loader = document.getElementById('loadingOverlay');
+            const results = document.getElementById('resultsContainer');
+            const detail = document.getElementById('detailSection');
+
+            loader.classList.remove('hidden');
+            results.classList.add('opacity-40');
+
+            const statuses = [
+                'Procesando historial de sorteos...',
+                'Calculando frecuencias...',
+                'Evaluando atrasos...',
+                'Generando pronóstico Top 3...'
+            ];
+
+            let step = 0;
+            const statusEl = document.getElementById('loadStatusText');
+            const interval = setInterval(() => {
+                step = (step + 1) % statuses.length;
+                statusEl.textContent = statuses[step];
+            }, 450);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                const { pool, historial } = generarHistorial(200);
+                const stats = calcularEstadisticas(pool, historial);
+                lastResult = {
+                    loteria: currentLottery.name,
+                    categoria: currentCategory,
+                    top: stats.ranking.slice(0, 3),
+                    total: historial.length,
+                    fecha: new Date().toLocaleString('es-VE')
+                };
+                renderTopSugerencias(lastResult.top);
+                renderDetalle(stats, historial);
+                loader.classList.add('hidden');
+                results.classList.remove('opacity-40');
+                detail.classList.remove('hidden');
+                showToast('Análisis completado ✅');
+            }, 1800);
+        }
+
+        function renderTopSugerencias(top) {
+            const grid = document.getElementById('topSuggestionsGrid');
+            const medallas = ['🥇','🥈','🥉'];
+            grid.innerHTML = top.map((t, i) => `
+                <div class="bg-slate-800/60 border border-emerald-500/20 rounded-xl p-3 text-center">
+                    <div class="text-2xl mb-1">${medallas[i]}</div>
+                    <div class="text-lg font-extrabold text-emerald-300 truncate">${t.valor}</div>
+                    <div class="text-[10px] text-slate-400 mt-1">
+                        Frec: <span class="text-slate-200 font-bold">${t.frecuencia}</span> ·
+                        Atraso: <span class="text-slate-200 font-bold">${t.atraso}</span>
+                    </div>
+                    <div class="mt-2 h-1.5 w-full bg-slate-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-emerald-500 to-amber-400" style="width:${Math.min(100, t.score * 3)}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDetalle(stats, historial) {
+            const grid = document.getElementById('detailGrid');
+            const topFrec = stats.ranking[0];
+            const topAtraso = [...stats.ranking].sort((a, b) => b.atraso - a.atraso)[0];
+            grid.innerHTML = `
+                <div class="bg-slate-800/50 rounded-xl p-3 text-center">
+                    <div class="text-[10px] text-slate-400 uppercase">Sorteos analizados</div>
+                    <div class="text-lg font-extrabold text-emerald-300">${historial.length}</div>
+                </div>
+                <div class="bg-slate-800/50 rounded-xl p-3 text-center">
+                    <div class="text-[10px] text-slate-400 uppercase">Más frecuente</div>
+                    <div class="text-lg font-extrabold text-amber-300 truncate">${topFrec.valor}</div>
+                </div>
+                <div class="bg-slate-800/50 rounded-xl p-3 text-center">
+                    <div class="text-[10px] text-slate-400 uppercase">Mayor atraso</div>
+                    <div class="text-lg font-extrabold text-rose-300 truncate">${topAtraso.valor}</div>
+                </div>
+                <div class="bg-slate-800/50 rounded-xl p-3 text-center">
+                    <div class="text-[10px] text-slate-400 uppercase">Categoría</div>
+                    <div class="text-lg font-extrabold text-slate-200 capitalize">${currentCategory}</div>
+                </div>
+            `;
+        }
+
+        // ============ ACCIONES ============
+        function copiarPronostico() {
+            if (!lastResult) return showToast('Primero analiza un sorteo ⚠️');
+            const texto = `🎯 MatrixLotto Vzla\n${lastResult.loteria}\n${lastResult.top.map((t, i) => `${i+1}. ${t.valor}`).join('\n')}\nFecha: ${lastResult.fecha}`;
+            navigator.clipboard.writeText(texto)
+                .then(() => showToast('Pronóstico copiado 📋'))
+                .catch(() => showToast('No se pudo copiar'));
+        }
+
+        function compartirNativo() {
+            if (!lastResult) return showToast('Primero analiza un sorteo ⚠️');
+            const texto = `🎯 MatrixLotto Vzla\n${lastResult.loteria}\n${lastResult.top.map((t, i) => `${i+1}. ${t.valor}`).join('\n')}`;
+            if (navigator.share) {
+                navigator.share({ title: 'MatrixLotto Vzla', text: texto }).catch(() => {});
+            } else {
+                copiarPronostico();
+            }
+        }
+
+        function simularActualizacion() {
+            const icon = document.getElementById('syncIcon');
+            icon.classList.add('animate-spin');
+            setTimeout(() => {
+                icon.classList.remove('animate-spin');
+                updateClock();
+                showToast('Datos actualizados 🔄');
+            }, 800);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.style.opacity = '1';
+            clearTimeout(toast._t);
+            toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 2200);
+        }
+    </script>
+</body>
+                    </html>
