@@ -408,10 +408,9 @@
         let currentLottery = LOTERIAS.animalitos[0];
         let currentAnalysisData = null;
 
-        // Caché global independiente por lotería para evitar cambios al presionar dos veces
+        // Memoria caché segura por ID de lotería
         let cacheAnalisisPorLoteria = {};
-        // Historial simulado por lotería para detectar si hay nuevos resultados ingresados
-        let historialSimuladoPorLoteria = {};
+        let contadorCambiosPorLoteria = {};
 
         window.onload = function() {
             renderLotteryGrid();
@@ -422,97 +421,4 @@
         function actualizarHoraHeader() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', hour12: true });
-            const dateStr = now.toLocaleDateString('es-VE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            document.getElementById('lblTime').innerText = `${dateStr} - ${timeStr}`;
-            document.getElementById('lblPronosticDate').innerText = `📅 ${dateStr}`;
-        }
-
-        function switchCategory(cat) {
-            currentCategory = cat;
-            const btnAnim = document.getElementById('tabAnimalitos');
-            const btnTrip = document.getElementById('tabTriples');
-
-            if (cat === 'animalitos') {
-                btnAnim.className = "py-2 px-3 text-xs font-semibold rounded-lg transition bg-slate-800 text-emerald-400 shadow-sm flex items-center justify-center gap-2";
-                btnTrip.className = "py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-2";
-                currentLottery = LOTERIAS.animalitos[0];
-            } else {
-                btnTrip.className = "py-2 px-3 text-xs font-semibold rounded-lg transition bg-slate-800 text-emerald-400 shadow-sm flex items-center justify-center gap-2";
-                btnAnim.className = "py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-2";
-                currentLottery = LOTERIAS.triples[0];
-            }
-
-            renderLotteryGrid();
-            ejecutarAnalisis();
-        }
-
-        function renderLotteryGrid() {
-            const container = document.getElementById('lotteryGrid');
-            container.innerHTML = '';
-
-            const list = LOTERIAS[currentCategory];
-            list.forEach(item => {
-                const isSelected = item.id === currentLottery.id;
-                const card = document.createElement('button');
-                card.onclick = () => selectLottery(item);
-                card.className = `p-3 rounded-xl border text-left transition flex items-center gap-2.5 ${
-                    isSelected 
-                    ? 'bg-slate-800 border-emerald-500 text-white shadow-md ring-1 ring-emerald-500/50' 
-                    : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
-                }`;
-
-                card.innerHTML = `
-                    <span class="text-xl">${item.icon}</span>
-                    <div class="truncate">
-                        <div class="font-bold text-xs truncate ${isSelected ? 'text-emerald-400' : ''}">${item.name}</div>
-                        <div class="text-[10px] text-slate-500 font-medium capitalize">${item.type}</div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-
-            document.getElementById('selectedLotteryName').innerText = currentLottery.name;
-        }
-
-        function selectLottery(lotteryItem) {
-            currentLottery = lotteryItem;
-            renderLotteryGrid();
-            ejecutarAnalisis();
-        }
-
-        function generarDatosAnalisis(lottery, estadoHistorial) {
-            const isAnimalito = lottery.type.startsWith('animalito');
-            
-            // Usar una semilla fija basada en el estado actual del historial de esta lotería
-            // para que si los datos no cambian, el resultado sea exactamente el mismo.
-            let seed = 12345;
-            for (let i = 0; i < estadoHistorial.length; i++) {
-                seed += estadoHistorial.charCodeAt(i) * (i + 1);
-            }
-
-            // Generador pseudoaleatorio determinista basado en semilla
-            function pseudoRandom(s) {
-                let x = Math.sin(s++) * 10000;
-                return x - Math.floor(x);
-            }
-
-            let s = seed;
-            function shuffleDeterministic(array) {
-                let arr = [...array];
-                for (let i = arr.length - 1; i > 0; i--) {
-                    let j = Math.floor(pseudoRandom(s++) * (i + 1));
-                    [arr[i], arr[j]] = [arr[j], arr[i]];
-                }
-                return arr;
-            }
-
-            let hotItems = [];
-            let coldItems = [];
-            let topSuggestions = [];
-            let timeSlots = [];
-            let weeklyTop = [];
-            let weeklyLow = [];
-
-            if (isAnimalito) {
-                const pool = lottery.maxRange === 77 
-                    ? ANIMALITOS_LISTA 
+            const dateStr = now.toLocaleDateString('es-VE', { day: '2-digit', month: '2-digit', year:
