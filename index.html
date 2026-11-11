@@ -18,6 +18,7 @@
             animation: gradientBG 15s ease infinite;
             color: #F8FAFC;
             -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
         }
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
@@ -45,9 +46,55 @@
         .glow-btn {
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
         }
+
+        /* 🐾 Estilos y Animaciones de Animalitos de Fondo */
+        .bg-animal-float {
+            position: fixed;
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.15;
+            filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.2));
+            animation: floatAnimal 18s ease-in-out infinite;
+        }
+
+        @keyframes floatAnimal {
+            0% {
+                transform: translateY(0vh) translateX(0vw) rotate(0deg) scale(1);
+            }
+            33% {
+                transform: translateY(-25vh) translateX(15vw) rotate(120deg) scale(1.1);
+            }
+            66% {
+                transform: translateY(-10vh) translateX(-15vw) rotate(240deg) scale(0.9);
+            }
+            100% {
+                transform: translateY(0vh) translateX(0vw) rotate(360deg) scale(1);
+            }
+        }
+
+        /* Animación para dar vida y parpadeo a los ojos / elementos */
+        @keyframes blinkEyes {
+            0%, 90%, 100% { transform: scaleY(1); }
+            95% { transform: scaleY(0.1); }
+        }
+        .animal-eyes {
+            animation: blinkEyes 4s infinite;
+            display: inline-block;
+            transform-origin: center;
+        }
     </style>
 </head>
-<body class="min-h-screen pb-12 flex flex-col justify-between selection:bg-amber-500 selection:text-black">
+<body class="min-h-screen pb-12 flex flex-col justify-between selection:bg-amber-500 selection:text-black relative">
+
+    <!-- 🐾 Contenedor de Animalitos de Fondo Interactivos -->
+    <div id="backgroundAnimalsContainer">
+        <div class="bg-animal-float text-6xl sm:text-8xl" style="top: 10%; left: 5%; animation-duration: 22s;"><span class="animal-eyes">🦅</span></div>
+        <div class="bg-animal-float text-6xl sm:text-8xl" style="top: 30%; right: 8%; animation-duration: 25s; animation-delay: -3s;"><span class="animal-eyes">🐅</span></div>
+        <div class="bg-animal-float text-6xl sm:text-8xl" style="bottom: 20%; left: 10%; animation-duration: 20s; animation-delay: -6s;"><span class="animal-eyes">🐎</span></div>
+        <div class="bg-animal-float text-6xl sm:text-8xl" style="top: 60%; right: 15%; animation-duration: 28s; animation-delay: -9s;"><span class="animal-eyes">🐬</span></div>
+        <div class="bg-animal-float text-6xl sm:text-8xl" style="bottom: 5%; right: 40%; animation-duration: 24s; animation-delay: -12s;"><span class="animal-eyes">🦖</span></div>
+    </div>
 
     <!-- Header Navigation -->
     <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 shadow-lg">
@@ -78,7 +125,7 @@
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-4xl mx-auto px-4 py-6 w-full flex-grow space-y-6">
+    <main class="max-w-4xl mx-auto px-4 py-6 w-full flex-grow space-y-6 relative z-10">
 
         <!-- Banner Informativo -->
         <div class="bg-gradient-to-r from-slate-800/90 via-slate-800/80 to-slate-900/90 border border-slate-700/60 rounded-2xl p-4 shadow-xl relative overflow-hidden backdrop-blur-sm">
@@ -87,7 +134,7 @@
                 <div>
                     <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-1">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 badge-pulse"></span>
-                        Algoritmo Estadístico Operativo
+                        Algoritmo Estadístico Operativo (Incluye Guacharito y 77 Animalitos)
                     </span>
                     <h2 class="text-lg font-bold text-slate-100">Pronósticos Automatizados de Loterías</h2>
                     <p class="text-xs text-slate-400 max-w-xl">Selecciona tu sorteo preferido y analiza frecuencias, atrasos y tendencias con un solo clic.</p>
@@ -349,6 +396,7 @@
             animalitos: [
                 { id: 'lotto_activo', name: 'Lotto Activo (0-36)', icon: '🐾', type: 'animalito', maxRange: 37 },
                 { id: 'la_granjita', name: 'La Granjita (0-36)', icon: '🚜', type: 'animalito', maxRange: 37 },
+                { id: 'guacharito_millonario', name: 'El Guacharito Millonario (77 An.)', icon: '🦅', type: 'animalito_ext', maxRange: 78 },
                 { id: 'ruleta_activa', name: 'Ruleta Activa', icon: '🎡', type: 'animalito', maxRange: 37 },
                 { id: 'loto_chaima', name: 'Loto Chaima', icon: '🌿', type: 'animalito', maxRange: 37 },
                 { id: 'junla_millonaria', name: 'Junla Millonaria', icon: '💰', type: 'animalito', maxRange: 37 },
@@ -358,8 +406,7 @@
                 { id: 'centena_animalitos', name: 'Centena Animalitos', icon: '💯', type: 'animalito', maxRange: 37 },
                 { id: 'mega_animalitos_40', name: 'Mega Animalitos 40', icon: '🐆', type: 'animalito_ext', maxRange: 41 },
                 { id: 'lotto_activo_int', name: 'Lotto Activo Int', icon: '🌐', type: 'animalito', maxRange: 37 },
-                { id: 'centena_plus', name: 'Centena Plus', icon: '✨', type: 'animalito', maxRange: 37 },
-                { id: 'guacharito_millonario', name: 'El Guacharito Millonario', icon: '🦅', type: 'animalito_ext', maxRange: 78 }
+                { id: 'centena_plus', name: 'Centena Plus', icon: '✨', type: 'animalito', maxRange: 37 }
             ],
             triples: [
                 { id: 'triple_zulia', name: 'Triple Zulia', icon: '⚡', type: 'triple' },
@@ -665,7 +712,6 @@
             const lotteryId = currentLottery.id;
             const aciertosActuales = aciertosPorLoteria[lotteryId] || [];
 
-            // Valida únicamente contra el Top 3 y el Top Caliente del Día
             function esAciertoEstricto(textoValor) {
                 const valClean = textoValor.trim().toLowerCase();
                 const enTop3 = data.topSuggestions.some(item => 
