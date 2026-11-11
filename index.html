@@ -13,9 +13,16 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0F172A;
+            background: linear-gradient(135deg, #0F172A, #1E293B, #090D16);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: #F8FAFC;
             -webkit-tap-highlight-color: transparent;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         ::-webkit-scrollbar {
             width: 6px;
@@ -43,7 +50,7 @@
 <body class="min-h-screen pb-12 flex flex-col justify-between selection:bg-amber-500 selection:text-black">
 
     <!-- Header Navigation -->
-    <header class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-4 py-3 shadow-lg">
+    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 shadow-lg">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2.5">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-emerald-500 to-teal-500 flex items-center justify-center font-black text-xl shadow-md text-slate-950">
@@ -74,7 +81,7 @@
     <main class="max-w-4xl mx-auto px-4 py-6 w-full flex-grow space-y-6">
 
         <!-- Banner Informativo -->
-        <div class="bg-gradient-to-r from-slate-800 via-slate-800/90 to-slate-900 border border-slate-700/60 rounded-2xl p-4 shadow-xl relative overflow-hidden">
+        <div class="bg-gradient-to-r from-slate-800/90 via-slate-800/80 to-slate-900/90 border border-slate-700/60 rounded-2xl p-4 shadow-xl relative overflow-hidden backdrop-blur-sm">
             <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-emerald-500/10 rounded-full blur-2xl"></div>
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 relative z-10">
                 <div>
@@ -143,7 +150,7 @@
         <div id="resultsContainer" class="space-y-6">
 
             <!-- Pronóstico Inteligente (Top 3 Sugeridos) -->
-            <section class="bg-slate-900 border border-emerald-500/30 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
+            <section class="bg-slate-900/90 backdrop-blur-md border border-emerald-500/30 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 bg-gradient-to-r from-emerald-500 to-amber-500 text-slate-950 font-extrabold text-[10px] px-3 py-1 rounded-bl-xl uppercase tracking-wider">
                     Sugerencias de Hoy
                 </div>
@@ -177,7 +184,7 @@
             </section>
 
             <!-- Sección: Sobresalientes vs Menos Sobresalientes de la Semana -->
-            <section class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md">
+            <section class="bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-4 shadow-md">
                 <div class="flex justify-between items-center mb-3">
                     <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
                         <i class="fa-solid fa-calendar-week"></i>
@@ -215,7 +222,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
                 <!-- Top Calientes -->
-                <section class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md">
+                <section class="bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-4 shadow-md">
                     <div class="flex justify-between items-center mb-3">
                         <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
                             <i class="fa-solid fa-fire"></i>
@@ -229,7 +236,7 @@
                 </section>
 
                 <!-- Top Fríos / Atrasados -->
-                <section class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md">
+                <section class="bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-4 shadow-md">
                     <div class="flex justify-between items-center mb-3">
                         <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
                             <i class="fa-solid fa-snowflake"></i>
@@ -244,7 +251,7 @@
             </div>
 
             <!-- Estadísticas por Franja Horaria -->
-            <section class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-md">
+            <section class="bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-4 shadow-md">
                 <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2 mb-3">
                     <i class="fa-solid fa-clock text-emerald-400"></i>
                     Proyección por Franja Horaria
@@ -255,7 +262,7 @@
             </section>
 
             <!-- 📊 Panel Público de Historial y Eficacia de la Página -->
-            <section class="bg-slate-900 border border-emerald-500/40 rounded-2xl p-5 shadow-xl space-y-4">
+            <section class="bg-slate-900/90 backdrop-blur-md border border-emerald-500/40 rounded-2xl p-5 shadow-xl space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-3">
                     <div>
                         <h4 class="text-sm font-bold text-slate-200 flex items-center gap-2">
@@ -290,7 +297,7 @@
             </section>
 
             <!-- Simulador de Carga de Resultado para Administrador / Verificación -->
-            <section class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4">
+            <section class="bg-slate-900/60 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4">
                 <details class="group">
                     <summary class="flex justify-between items-center cursor-pointer list-none font-semibold text-xs text-slate-400 group-open:text-emerald-400">
                         <span class="flex items-center gap-2">
@@ -343,12 +350,16 @@
                 { id: 'lotto_activo', name: 'Lotto Activo (0-36)', icon: '🐾', type: 'animalito', maxRange: 37 },
                 { id: 'la_granjita', name: 'La Granjita (0-36)', icon: '🚜', type: 'animalito', maxRange: 37 },
                 { id: 'ruleta_activa', name: 'Ruleta Activa', icon: '🎡', type: 'animalito', maxRange: 37 },
-                { id: 'guacharo_activo', name: 'Guácharo Activo (77)', icon: '🦅', type: 'animalito_ext', maxRange: 78 },
-                { id: 'selva_plus', name: 'Selva Plus', icon: '🦁', type: 'animalito', maxRange: 37 },
-                { id: 'lotto_activo_2', name: 'Lotto Activo 2 (El Monje)', icon: '🧘', type: 'animalito', maxRange: 37 },
-                { id: 'mega_animal_77', name: 'Mega Animal 77', icon: '🐘', type: 'animalito_ext', maxRange: 78 },
-                { id: 'la_tombola', name: 'La Tómbola', icon: '🎯', type: 'animalito_ext', maxRange: 78 },
-                { id: 'lotto_activo_rd', name: 'Lotto Activo RD', icon: '🌴', type: 'animalito', maxRange: 37 }
+                { id: 'loto_chaima', name: 'Loto Chaima', icon: '🌿', type: 'animalito', maxRange: 37 },
+                { id: 'junla_millonaria', name: 'Junla Millonaria', icon: '💰', type: 'animalito', maxRange: 37 },
+                { id: 'la_ricachona', name: 'La Ricachona', icon: '💎', type: 'animalito', maxRange: 37 },
+                { id: 'granja_millionaria', name: 'Granja Millonaria', icon: '🏡', type: 'animalito', maxRange: 37 },
+                { id: 'chance_animalitos', name: 'Chance con Animalitos', icon: '🎲', type: 'animalito', maxRange: 37 },
+                { id: 'centena_animalitos', name: 'Centena Animalitos', icon: '💯', type: 'animalito', maxRange: 37 },
+                { id: 'mega_animalitos_40', name: 'Mega Animalitos 40', icon: '🐆', type: 'animalito_ext', maxRange: 41 },
+                { id: 'lotto_activo_int', name: 'Lotto Activo Int', icon: '🌐', type: 'animalito', maxRange: 37 },
+                { id: 'centena_plus', name: 'Centena Plus', icon: '✨', type: 'animalito', maxRange: 37 },
+                { id: 'guacharito_millonario', name: 'El Guacharito Millonario', icon: '🦅', type: 'animalito_ext', maxRange: 78 }
             ],
             triples: [
                 { id: 'triple_zulia', name: 'Triple Zulia', icon: '⚡', type: 'triple' },
@@ -654,15 +665,28 @@
             const lotteryId = currentLottery.id;
             const aciertosActuales = aciertosPorLoteria[lotteryId] || [];
 
-            function esAcierto(textoValor) {
-                return aciertosActuales.some(a => textoValor.toLowerCase().includes(a.resultado.toLowerCase()) || a.resultado.toLowerCase().includes(textoValor.toLowerCase()));
+            // Valida únicamente contra el Top 3 y el Top Caliente del Día
+            function esAciertoEstricto(textoValor) {
+                const valClean = textoValor.trim().toLowerCase();
+                const enTop3 = data.topSuggestions.some(item => 
+                    item.num.toLowerCase() === valClean || item.name.toLowerCase().includes(valClean)
+                );
+                const enCalientes = data.hotItems.some(item => 
+                    item.label.toLowerCase().includes(valClean)
+                );
+                
+                const registradoEnHistorial = aciertosActuales.some(a => 
+                    a.resultado.toLowerCase().includes(valClean) || valClean.includes(a.resultado.toLowerCase())
+                );
+
+                return (enTop3 || enCalientes) && registradoEnHistorial;
             }
 
             const topGrid = document.getElementById('topSuggestionsGrid');
             topGrid.innerHTML = '';
 
             data.topSuggestions.forEach((item, index) => {
-                const acertado = esAcierto(item.num) || esAcierto(item.name);
+                const acertado = esAciertoEstricto(item.num) || esAciertoEstricto(item.name);
                 const card = document.createElement('div');
                 card.className = `p-4 rounded-xl border relative ${
                     acertado 
@@ -712,7 +736,7 @@
             const hotList = document.getElementById('hotList');
             hotList.innerHTML = '';
             data.hotItems.forEach(item => {
-                const acertado = esAcierto(item.label);
+                const acertado = esAciertoEstricto(item.label);
                 const row = document.createElement('div');
                 row.className = `flex justify-between items-center p-2.5 rounded-xl border text-xs ${acertado ? 'bg-emerald-950/40 border-emerald-400' : 'bg-slate-800/40 border-slate-800'}`;
                 row.innerHTML = `
@@ -745,13 +769,11 @@
             const timeContainer = document.getElementById('timeSlotContainer');
             timeContainer.innerHTML = '';
             data.timeSlots.forEach(slot => {
-                const acertado = esAcierto(slot.tend);
                 const card = document.createElement('div');
-                card.className = `p-3 rounded-xl border text-xs ${acertado ? 'bg-emerald-950/40 border-emerald-400' : 'bg-slate-800/50 border-slate-800'}`;
+                card.className = "p-3 rounded-xl border text-xs bg-slate-800/50 border-slate-800";
                 card.innerHTML = `
                     <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">
                         <span>${slot.slot}</span>
-                        ${acertado ? '<span class="text-[9px] text-emerald-400 font-extrabold">✅ ACERTÓ</span>' : ''}
                     </div>
                     <div class="font-extrabold text-slate-200 flex items-center gap-1.5">
                         <i class="fa-solid fa-arrow-trend-up text-emerald-400 text-[10px]"></i>
@@ -771,11 +793,8 @@
             const enCalientes = dataAnalisis.hotItems.some(item => 
                 item.label.toLowerCase().includes(valClean)
             );
-            const enFranja = dataAnalisis.timeSlots.some(slot => 
-                slot.tend.toLowerCase().includes(valClean)
-            );
 
-            return enTop3 || enCalientes || enFranja;
+            return enTop3 || enCalientes;
         }
 
         function agregarNuevoResultado() {
@@ -809,9 +828,9 @@
             renderHistorialAciertosUI();
 
             if (esValido) {
-                showToast(`¡Acierto verificado y registrado públicamente!`, 'success');
+                showToast(`¡Acierto verificado en Top 3 / Calientes y registrado!`, 'success');
             } else {
-                showToast(`Resultado "${val}" registrado en el historial.`, 'info');
+                showToast(`Resultado "${val}" registrado en el historial general.`, 'info');
             }
 
             input.value = '';
@@ -855,7 +874,7 @@
                         <span>Sorteo <b>(${item.horario})</b>: <strong class="text-white">${item.resultado}</strong> <span class="text-[10px] text-slate-500">(${item.fechaHora})</span></span>
                     </div>
                     <span class="text-[10px] font-bold px-2 py-0.5 rounded ${item.esAciertoPrediccion ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-400'}">
-                        ${item.esAciertoPrediccion ? '🎯 Acierto Verificado' : '📋 Resultado Registrado'}
+                        ${item.esAciertoPrediccion ? '🎯 Acierto en Pronóstico' : '📋 Resultado Registrado'}
                     </span>
                 `;
                 container.appendChild(row);
