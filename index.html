@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MatrixLotto Vzla - Analizador Estadístico de Loterías</title>
     <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cloudflare.com">
     <!-- Google Font Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -120,7 +120,7 @@
             </div>
         </section>
 
-        <!-- Botón de Análisis Principal Optimizado y Centrado en 1 Sola Línea -->
+        <!-- Botón de Análisis Principal -->
         <section class="py-2">
             <button id="btnAnalyze" onclick="ejecutarAnalisis()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-sm sm:text-base glow-btn transition active:scale-[0.99] flex items-center justify-center gap-2 border border-emerald-300/40 whitespace-nowrap overflow-hidden text-ellipsis">
                 <i class="fa-solid fa-bolt text-base sm:text-lg shrink-0"></i>
@@ -142,7 +142,7 @@
         <!-- Bloque de Resultados del Análisis -->
         <div id="resultsContainer" class="hidden space-y-6">
             
-            <!-- SECCIÓN: Historial Dinámico de Aciertos Evaluado por el Algoritmo -->
+            <!-- SECCIÓN: Historial Dinámico de Sorteos y Aciertos -->
             <section class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 shadow-xl">
                 <div class="flex justify-between items-center mb-3">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
@@ -152,7 +152,7 @@
                     <span class="text-[9px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700 font-mono">Tiempo Real</span>
                 </div>
                 <div id="historyTrackList" class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                    <!-- Cargado de forma autónoma por la lógica interna -->
+                    <!-- Cargado de forma autónoma por el script -->
                 </div>
             </section>
 
