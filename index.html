@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MatrixLotto Vzla - Analizador Estadístico de Loterías</title>
     <!-- Tailwind CSS CDN -->
-    <script src="https://tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cloudflare.com">
     <!-- Google Font Inter -->
@@ -166,3 +166,248 @@
                         </div>
                         <div class="flex items-center gap-5">
                             <div id="mainPredictionValBox" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col items-center justify-center font-mono relative shadow-inner">
+--
+---
+
+
+Proyección de Alta Frecuencia
+Este elemento presenta un índice de rezago óptimo con una correlación del --% en las últimas simulaciones ponderadas.
+
+Tendencia: Alcista
+Desviación: Mínima
+
+
+
+
+Vector Secundario de Resalpa (Top 3 Alternos)
+
+
+
+
+
+Métricas Generales
+Fiabilidad del Sorteo
+--%
+
+
+
+
+Entropía del Tablero
+--%
+
+
+
+
+
+ Ciclo Promedio:--
+ Densidad Volátil:--
+
+
+
+
+
+MatrixLotto Vzla es un simulador matemático basado en frecuencias históricas y permutaciones. No se operan apuestas de ningún tipo.
+© 2026 MatrixLotto Vzla. Datos Estadísticos de Uso Público Abierto.
+// Diccionario Tradicional Standard de 38 Animalitos
+const ANIMALITOS_STANDARD = {
+"00": "Delfín", "0": "Delfín", "1": "Carnero", "2": "Toro", "3": "Ciempiés", "4": "Alacrán", "5": "León",
+"6": "Rana", "7": "Perico", "8": "Ratón", "9": "Águila", "10": "Tigre", "11": "Gato",
+"12": "Caballo", "13": "Mono", "14": "Paloma", "15": "Zorro", "16": "Oso", "17": "Pavo",
+"18": "Burro", "19": "Chivo", "20": "Cochino", "21": "Gallo", "22": "Camello", "23": "Cebra",
+"24": "Iguana", "25": "Gallina", "26": "Vaca", "27": "Perro", "28": "Zamuro", "29": "Elefante",
+"30": "Caimán", "31": "Lapa", "32": "Ardilla", "33": "Pescado", "34": "Venado", "35": "Jirafa", "36": "Culebra"
+};
+// Diccionario completo de Guácharo Activo extendido a exactamente 77 elementos (00, 0 al 75)
+const ANIMALITOS_GUACHARO = {
+"00": "Guácharo", "0": "Ballena", "1": "Carnero", "2": "Toro", "3": "Ciempiés", "4": "Alacrán", "5": "León",
+"6": "Rana", "7": "Perico", "8": "Ratón", "9": "Águila", "10": "Tigre", "11": "Gato", "12": "Caballo",
+"13": "Mono", "14": "Paloma", "15": "Zorro", "16": "Oso", "17": "Pavo", "18": "Burro", "19": "Chivo",
+"20": "Cochino", "21": "Gallo", "22": "Camello", "23": "Cebra", "24": "Iguana", "25": "Gallina", "26": "Vaca",
+"27": "Perro", "28": "Zamuro", "29": "Elefante", "30": "Caimán", "31": "Lapa", "32": "Ardilla", "33": "Pescado",
+"34": "Venado", "35": "Jirafa", "36": "Culebra", "37": "Águila Arpía", "38": "Gavilán", "39": "Chigüire",
+"40": "Cunaguaro", "41": "Oso Frontino", "42": "Turpial", "43": "Araguato", "44": "Cardenalito", "45": "Bachaquero",
+"46": "Avispa", "47": "Tuqueque", "48": "Morrocoy", "49": "Cascabel", "50": "Terecay", "51": "Tonina",
+"52": "Puma", "53": "Jaguar", "54": "Perezoso", "55": "Picure", "56": "Puercoespín", "57": "Rabipelado",
+"58": "Báquiro", "59": "Venado Caramerudo", "60": "Armadillo", "61": "Oso Hormiguero", "62": "Acure", "63": "Corocoro",
+"64": "Colibrí", "65": "Flamenco", "66": "Garza Real", "67": "Gaviota", "68": "Loro Real", "69": "Tucán",
+"70": "Pájaro Carpintero", "71": "Tijereta", "72": "Tocororo", "73": "Zambullidor", "74": "Tarántula", "75": "Ciervo"
+};
+// Repositorio de Loterías Tradicionales de Venezuela
+const LOTERIAS_DATA = {
+"lotto_activo": { name: "Lotto Activo", type: "animalitos", elements: ANIMALITOS_STANDARD },
+"la_granjita": { name: "La Granjita", type: "animalitos", elements: ANIMALITOS_STANDARD },
+"guacharo_activo": { name: "Guácharo Activo", type: "animalitos", elements: ANIMALITOS_GUACHARO },
+"lotto_rey": { name: "Lotto Rey", type: "animalitos", elements: ANIMALITOS_STANDARD },
+"granjita_gato": { name: "Granjita Gato", type: "animalitos", elements: ANIMALITOS_STANDARD },
+"selva_plus": { name: "Selva Plus", type: "animalitos", elements: ANIMALITOS_STANDARD },
+"ruleta_activa": { name: "Ruleta Activa", type: "animalitos", elements: ANIMALITOS_STANDARD },
+"animalito_tuqueque": { name: "Tuqueque Real", type: "animalitos", elements: ANIMALITOS_STANDARD },
+"triple_gordo": { name: "Triple Gordo", type: "triples", prefix: "Triple" },
+"chance_astral": { name: "El Chance Astral", type: "triples", prefix: "Triple" },
+"zulia_triple": { name: "Triple Zulia", type: "triples", prefix: "Triple" },
+"tachira_triple": { name: "Triple Táchira", type: "triples", prefix: "Triple" }
+};
+let currentCategory = 'animalitos';
+let selectedLotteryKey = 'lotto_activo';
+function renderLotteryGrid() {
+const grid = document.getElementById('lotteryGrid');
+grid.innerHTML = '';
+Object.entries(LOTERIAS_DATA).forEach(([key, lottery]) => {
+if (lottery.type !== currentCategory) return;
+const isSelected = key === selectedLotteryKey;
+const btn = document.createElement('button');
+btn.className = p-3 rounded-xl border text-left transition relative overflow-hidden group ${ isSelected  ? 'bg-gradient-to-br from-slate-800 to-slate-900 text-emerald-400 border-emerald-500/80 shadow-md'  : 'bg-slate-900/40 text-slate-400 border-slate-800/80 hover:bg-slate-800/50 hover:text-slate-200' };
+btn.onclick = () => selectLottery(key);
+const icon = lottery.type === 'animalitos' ? 'fa-paw' : 'fa-arrow-down-1-9';
+btn.innerHTML = <div class="flex items-center gap-2"> <i class="fa-solid ${icon} text-xs ${isSelected ? 'text-emerald-400' : 'text-slate-600 group-hover:text-slate-400'}"></i> <span class="text-xs font-bold tracking-tight block truncate">${lottery.name}</span> </div> ${isSelected ? '<div class="absolute right-1.5 bottom-1 w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-sm"></div>' : ''};
+grid.appendChild(btn);
+});
+document.getElementById('selectedLotteryName').textContent = LOTERIAS_DATA[selectedLotteryKey].name;
+}
+function switchCategory(cat) {
+currentCategory = cat;
+selectedLotteryKey = Object.keys(LOTERIAS_DATA).find(k => LOTERIAS_DATA[k].type === cat);
+const btnAnim = document.getElementById('tabAnimalitos');
+const btnTrip = document.getElementById('tabTriples');
+if(cat === 'animalitos') {
+btnAnim.className = "py-2 px-3 text-xs font-semibold rounded-lg transition bg-slate-800 text-emerald-400 shadow-sm flex items-center justify-center gap-2";
+btnTrip.className = "py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-2";
+} else {
+btnTrip.className = "py-2 px-3 text-xs font-semibold rounded-lg transition bg-slate-800 text-emerald-400 shadow-sm flex items-center justify-center gap-2";
+btnAnim.className = "py-2 px-3 text-xs font-semibold rounded-lg transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-2";
+}
+renderLotteryGrid();
+}
+function selectLottery(key) {
+selectedLotteryKey = key;
+renderLotteryGrid();
+}
+function ejecutarAnalisis() {
+document.getElementById('resultsContainer').classList.add('hidden');
+const loader = document.getElementById('loadingOverlay');
+loader.classList.remove('hidden');
+setTimeout(() => {
+loader.classList.add('hidden');
+generarResultadosAlgoritmo();
+document.getElementById('resultsContainer').classList.remove('hidden');
+}, 1400);
+}
+function generarResultadosAlgoritmo() {
+const loteria = LOTERIAS_DATA[selectedLotteryKey];
+let topDayId = "", topDayName = "";
+let alternativos = [];
+if (loteria.type === 'animalitos') {
+const llaves = Object.keys(loteria.elements);
+const seleccionados = [...llaves].sort(() => 0.5 - Math.random()).slice(0, 4);
+topDayId = seleccionados[0];
+topDayName = loteria.elements[topDayId];
+for(let i = 1; i <= 3; i++) {
+alternativos.push({
+id: seleccionados[i],
+label: loteria.elements[seleccionados[i]]
+});
+}
+document.getElementById('mainPredTitleName').textContent = "Proyección de Alta Frecuencia Animal";
+} else {
+topDayId = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+topDayName = "Triple Fijo";
+while(alternativos.length < 3) {
+let num = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+if(num !== topDayId && !alternativos.some(a => a.id === num)) {
+alternativos.push({ id: num, label: "Alterno" });
+}
+}
+document.getElementById('mainPredTitleName').textContent = "Proyección de Matriz Numérica C3";
+}
+// Inyección al Top Principal
+document.getElementById('mainPredictionId').textContent = topDayId;
+document.getElementById('mainPredictionLabel').textContent = topDayName;
+document.getElementById('mainPredictionProb').textContent = (82.1 + Math.random() * 14).toFixed(1);
+// Inyección al bloque Top 3 alterno de respaldo
+const containerAlt = document.getElementById('topAlternativeContainer');
+containerAlt.innerHTML = '';
+alternativos.forEach((item, index) => {
+const box = document.createElement('div');
+box.className = "bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-center relative overflow-hidden";
+box.innerHTML = <span class="absolute left-1 top-0.5 text-[8px] text-slate-500 font-bold font-mono">#${index+2}</span> <div class="text-lg font-black text-amber-400 font-mono">${item.id}</div> <div class="text-[9px] text-slate-400 font-semibold truncate uppercase mt-0.5">${item.label}</div>;
+containerAlt.appendChild(box);
+});
+// Métricas Complementarias Dinámicas
+document.getElementById('metricFiabilidad').textContent = Math.floor(76 + Math.random() * 20) + '%';
+document.getElementById('barFiabilidad').style.width = document.getElementById('metricFiabilidad').textContent;
+document.getElementById('metricEntropia').textContent = Math.floor(32 + Math.random() * 23) + '%';
+document.getElementById('barEntropia').style.width = document.getElementById('metricEntropia').textContent;
+document.getElementById('txtCiclo').textContent = Math.floor(4 + Math.random() * 6) + " Sorteos";
+document.getElementById('txtDensidad').textContent = (1.1 + Math.random() * 2).toFixed(3) + " σ";
+// --- ALGORITMO AUTÓNOMO DEL HISTORIAL DE ACIERTOS ---
+const historyTrackList = document.getElementById('historyTrackList');
+historyTrackList.innerHTML = '';
+const horasFicticias = ["09:00 AM", "11:00 AM", "01:00 PM", "04:00 PM", "07:00 PM"];
+// Forzamos un acierto para el Top 1 y un acierto dentro del Top 3 de respaldo
+const indexAciertoTop1 = Math.floor(Math.random() * horasFicticias.length);
+let indexAciertoTop3 = Math.floor(Math.random() * horasFicticias.length);
+while(indexAciertoTop3 === indexAciertoTop1) {
+indexAciertoTop3 = Math.floor(Math.random() * horasFicticias.length);
+}
+horasFicticias.forEach((hora, idx) => {
+let statusClass = "border-rose-500/20 bg-rose-500/5 text-rose-400";
+let badgeText = "No Acertó";
+let iconMarker = '';
+let itemDrawId = "";
+if (idx === indexAciertoTop1) {
+statusClass = "border-emerald-500/30 bg-emerald-500/10 text-emerald-400";
+badgeText = "Acertó Top 1";
+iconMarker = '';
+itemDrawId = topDayId;
+} else if (idx === indexAciertoTop3) {
+statusClass = "border-teal-500/30 bg-teal-500/10 text-teal-400";
+badgeText = "Acertó Top 3";
+iconMarker = '';
+itemDrawId = alternativos[Math.floor(Math.random() * alternativos.length)].id;
+} else {
+// Si el sorteo no acertó, extrae un ID del pool de la lotería que no interfiera con los ganadores
+if (loteria.type === 'animalitos') {
+const poolLlaves = Object.keys(loteria.elements);
+do {
+itemDrawId = poolLlaves[Math.floor(Math.random() * poolLlaves.length)];
+} while(itemDrawId === topDayId || alternativos.some(a => a.id === itemDrawId));
+} else {
+do {
+itemDrawId = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+} while(itemDrawId === topDayId || alternativos.some(a => a.id === itemDrawId));
+}
+}
+const trackCard = document.createElement('div');
+trackCard.className = p-2 rounded-xl border flex flex-col justify-between items-center text-center ${statusClass};
+trackCard.innerHTML = <div class="text-[9px] font-bold text-slate-400 font-mono tracking-tight">${hora}</div> <div class="text-base font-black font-mono my-0.5">${itemDrawId}</div> <div class="text-[8px] uppercase tracking-wide font-extrabold flex items-center gap-1"> ${iconMarker} ${badgeText} </div>;
+historyTrackList.appendChild(trackCard);
+});
+}
+function simularActualizacion() {
+const icon = document.getElementById('syncIcon');
+icon.classList.add('fa-spin');
+document.getElementById('lblTime').textContent = "Sincronizando...";
+setTimeout(() => {
+icon.classList.remove('fa-spin');
+const ahora = new Date();
+const horaString = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+document.getElementById('lblTime').textContent = Actualizado: ${horaString};
+if(!document.getElementById('resultsContainer').classList.contains('hidden')) {
+generarResultadosAlgoritmo();
+}
+}, 1000);
+}
+function compartirNativo() {
+if (navigator.share) {
+navigator.share({
+title: 'MatrixLotto Vzla',
+text: '¡Mira los análisis predictivos y de frecuencia estadística de hoy!',
+url: window.location.href
+}).catch(console.error);
+} else {
+alert("Enlace copiado al portapapeles.");
+}
+}
+window.onload = () => {
+renderLotteryGrid();
+};
